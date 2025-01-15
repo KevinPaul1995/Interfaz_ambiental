@@ -30,7 +30,7 @@ class _Screen_1State extends State<Screen_1> {
               
               alto: alto(context)*0.32,
               child: Container(
-                child: Center(child: Temperatura(grados: 20,calor: 28,)),
+                child: Center(child: Temperatura(grados: 33,calor: 28,)),
               )
             ),
             Cristal(

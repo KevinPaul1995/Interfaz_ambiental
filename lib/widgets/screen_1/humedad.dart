@@ -26,7 +26,7 @@ class _HumedadState extends State<Humedad> {
             //AGREGA UN GAUGE LINEAL
             Container(
               width: anchoBarra+ancho(context)*0.05,
-              color: Colors.amber,
+              //color: Colors.amber,
               child: Column(
                 children: [
                   Row(

@@ -1,7 +1,8 @@
 
 /*
+//luego de lo que te indiqué
 1. agregar dependencias en pubspec.yaml
-2. flutterfire configure
+2. flutterfire configure //
 3. firebase init
 3.1. seleccionar hosting
 3.2. seleccionar build/web
