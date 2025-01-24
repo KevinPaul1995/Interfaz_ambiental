@@ -58,6 +58,7 @@ class _TemperaturaState extends State<Temperatura> {
                       height: alto(context)*0.25,
                       width: ancho(context)*0.25,
                       child:  Termometro(
+                        color: color_temperaturas,
                         grados: widget.grados, // Valor de prueba
                       ),
                     ),
@@ -128,8 +129,10 @@ class _TemperaturaState extends State<Temperatura> {
 
 class Termometro extends StatefulWidget {
   final double grados;
+  final Color color;
   const Termometro({
     required this.grados,
+    required this.color,
     super.key});
 
   @override
@@ -142,87 +145,88 @@ class _TermometroState extends State<Termometro> {
     double tam_escala = 0.16;
     double tam_rojo = mapValue(widget.grados, -10, 50, 0, tam_escala);
     double tam_blanco=tam_escala-tam_rojo;
-    return Center(// contiene 3 columnas
-      child: Row( // contiene 3 columnas
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column( //columna de la escala c
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(// conatainer de la escala c
-                height: alto(context)*tam_escala+alto(context)*0.02,
-                width: ancho(context)*0.08,
-                decoration: BoxDecoration(
-                  //color: Colors.red,
-                ),
-                child: VerticalScale_C(initialValue: 50, finalValue: -10, numberOfLines: 7)
+    return Row( // contiene 3 columnas
+      //mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Column( //columna de la escala c
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(// conatainer de la escala c
+              height: alto(context)*tam_escala+alto(context)*0.02,
+              width: ancho(context)*0.08,
+              decoration: BoxDecoration(
+                //color: Colors.red,
               ),
-              SizedBox(height: alto(context)*0.05),
-            ],
-          ),
-          Container( //container del termometro
-            height: alto(context)*0.25, //el mismo tam del container blanco
-            width: ancho(context)*0.08,
-            decoration: BoxDecoration(
-              //color: const Color.fromARGB(255, 54, 244, 139),
+              child: VerticalScale_C(initialValue: 50, finalValue: -10, numberOfLines: 7)
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(//rect blanco
-                  height: alto(context)*tam_blanco,
-                  width: ancho(context)*0.04,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 233, 25, 25),
-                      width: 0.2),
-                    color: const Color.fromARGB(255, 225, 222, 222),
-                  ),
+            SizedBox(height: alto(context)*0.05),
+          ],
+        ),
+        Container( //container del termometro
+          height: alto(context)*0.25, //el mismo tam del container blanco
+          width: ancho(context)*0.07,
+          decoration: BoxDecoration(
+          //color: const Color.fromARGB(255, 54, 244, 139),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: alto(context)*0.009,
+              ),
+              Container(//rect blanco
+                height: alto(context)*tam_blanco,
+                width: ancho(context)*0.04,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: widget.color,
+                    width: 0.2),
+                  color: const Color.fromARGB(255, 225, 222, 222),
                 ),
-                Container(//rect rojo
-                  height: alto(context)*tam_rojo,
-                  width: ancho(context)*0.04,
-                  decoration: BoxDecoration(
-                    border: Border.symmetric(
-                      vertical: BorderSide(
-                        color: const Color.fromARGB(255, 233, 25, 25),
-                        width: 0.2),),
-                    color: Colors.red,
-                  ),
+              ),
+              Container(//rect rojo
+                height: alto(context)*tam_rojo,
+                width: ancho(context)*0.04,
+                decoration: BoxDecoration(
+                  border: Border.symmetric(
+                    vertical: BorderSide(
+                      color: widget.color,
+                      width: 0.2),),
+                  color: widget.color,
                 ),
-                Transform.translate(//circulo
-                  //offset: Offset(0, -alto(context)*0.00),
-                  offset: Offset(0, -alto(context)*0.025),
-                  child: Center(
-                    child: Container(
-                      height: alto(context)*0.075,
-                      width: alto(context)*0.075,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle
-                      ),
+              ),
+              Transform.translate(//circulo
+                //offset: Offset(0, -alto(context)*0.00),
+                offset: Offset(0, -alto(context)*0.025),
+                child: Center(
+                  child: Container(
+                    height: alto(context)*0.075,
+                    width: alto(context)*0.075,
+                    decoration: BoxDecoration(
+                      color: widget.color,
+                      shape: BoxShape.circle
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          Column( //columna de la escala c
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(// conatainer de la escala c
-                height: alto(context)*tam_escala+alto(context)*0.02,
-                width: ancho(context)*0.08,
-                decoration: BoxDecoration(
-                  //color: Colors.red,
-                ),
-                child: VerticalScale_F(initialValue: 50, finalValue: -10, numberOfLines: 7)
               ),
-              SizedBox(height: alto(context)*0.05),
             ],
           ),
-        ],
-      ),
+        ),
+        Column( //columna de la escala c
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(// conatainer de la escala c
+              height: alto(context)*tam_escala+alto(context)*0.02,
+              width: ancho(context)*0.08,
+              decoration: BoxDecoration(
+                //color: Colors.red,
+              ),
+              child: VerticalScale_F(initialValue: 50, finalValue: -10, numberOfLines: 7)
+            ),
+            SizedBox(height: alto(context)*0.05),
+          ],
+        ),
+      ],
     );
   }
 }

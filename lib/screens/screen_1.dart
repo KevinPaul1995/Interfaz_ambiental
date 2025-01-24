@@ -29,7 +29,7 @@ class _Screen_1State extends State<Screen_1> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Expanded(child: Center(child: CircularProgressIndicator()));
           }
 
           if (snapshot.hasError) {
@@ -39,6 +39,16 @@ class _Screen_1State extends State<Screen_1> {
           if (!snapshot.hasData || !snapshot.data!.exists) {
             return Center(child: Text('El documento no existe'));
           }
+          final data = snapshot.data!.data() as Map<String, dynamic>?;
+
+          // Ejemplo: Leer campos específicos
+          final double grados = data?['temperatura'] ?? 'Campo no disponible';
+          final double calor = data?['calor'] ?? 'Campo no disponible';
+          final double radiacion = data?['radiacion'] ?? 'Campo no disponible';
+          final double pm10 = data?['pm10'] ?? 'Campo no disponible';
+          final double pm25 = data?['pm25'] ?? 'Campo no disponible';
+          final double humedad = data?['humedad'] ?? 'Campo no disponible';
+
           return Container(
             padding: EdgeInsets.symmetric(vertical: alto(context) * 0.01, horizontal: ancho(context) * 0.005),
             child: Column(
@@ -50,28 +60,28 @@ class _Screen_1State extends State<Screen_1> {
                   
                   alto: alto(context)*0.32,
                   child: Container(
-                    child: Center(child: Temperatura(grados: 33,calor: 28,)),
+                    child: Center(child: Temperatura(grados: grados,calor: calor,)),
                   )
                 ),
                 Cristal(
                   ancho: ancho(context)-alto(context) * 0.01*2,
                   alto: alto(context)*0.12,
                   child: Container(
-                    child: Center(child: Radiacion(radiacion: 7)),
+                    child: Center(child: Radiacion(radiacion: radiacion)),
                   )
                 ),
                 Cristal(
                   ancho: ancho(context)-alto(context) * 0.01*2,
                   alto: alto(context)*0.16,
                   child: Container(
-                    child: Center(child: CalidadAire(calidad: 4)),
+                    child: Center(child: CalidadAire(calidad: max(pm25,pm25))),
                   )
                 ),
                 Cristal(
                   ancho: ancho(context)-alto(context) * 0.01*2,
                   alto: alto(context)*0.13,
                   child: Container(
-                    child: Center(child: Humedad(humedad: 100)),
+                    child: Center(child: Humedad(humedad: humedad)),
                   )
                 )
               ],
