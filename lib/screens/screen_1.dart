@@ -7,8 +7,10 @@ import 'package:interfaz/widgets/screen_1/calidad_aire.dart';
 import 'package:interfaz/widgets/screen_1/humedad.dart';
 import 'package:interfaz/widgets/screen_1/indice_radiacion.dart';
 import 'package:interfaz/widgets/screen_1/temperatura.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Screen_1 extends StatefulWidget {
+  
   const Screen_1({super.key});
 
   @override
@@ -16,59 +18,77 @@ class Screen_1 extends StatefulWidget {
 }
 
 class _Screen_1State extends State<Screen_1> {
+  
   @override
   Widget build(BuildContext context) {
     if(alto(context)>ancho(context)){
-      return Container(
-        padding: EdgeInsets.symmetric(vertical: alto(context) * 0.01, horizontal: ancho(context) * 0.005),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Cristal(
-              ancho: ancho(context)-alto(context) * 0.01*2,
-              
-              alto: alto(context)*0.32,
-              child: Container(
-                child: Center(child: Temperatura(grados: 33,calor: 28,)),
-              )
-            ),
-            Cristal(
-              ancho: ancho(context)-alto(context) * 0.01*2,
-              alto: alto(context)*0.12,
-              child: Container(
-                child: Center(child: Radiacion(radiacion: 7)),
-              )
-            ),
-            Cristal(
-              ancho: ancho(context)-alto(context) * 0.01*2,
-              alto: alto(context)*0.16,
-              child: Container(
-                child: Center(child: CalidadAire(calidad: 4)),
-              )
-            ),
-            Cristal(
-              ancho: ancho(context)-alto(context) * 0.01*2,
-              alto: alto(context)*0.13,
-              child: Container(
-                child: Center(child: Humedad(humedad: 100)),
-              )
-            )
-          ],
-        )
+      return StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('real_time')
+            .doc("datos_actuales")
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
 
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          if (!snapshot.hasData || !snapshot.data!.exists) {
+            return Center(child: Text('El documento no existe'));
+          }
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: alto(context) * 0.01, horizontal: ancho(context) * 0.005),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Cristal(
+                  ancho: ancho(context)-alto(context) * 0.01*2,
+                  
+                  alto: alto(context)*0.32,
+                  child: Container(
+                    child: Center(child: Temperatura(grados: 33,calor: 28,)),
+                  )
+                ),
+                Cristal(
+                  ancho: ancho(context)-alto(context) * 0.01*2,
+                  alto: alto(context)*0.12,
+                  child: Container(
+                    child: Center(child: Radiacion(radiacion: 7)),
+                  )
+                ),
+                Cristal(
+                  ancho: ancho(context)-alto(context) * 0.01*2,
+                  alto: alto(context)*0.16,
+                  child: Container(
+                    child: Center(child: CalidadAire(calidad: 4)),
+                  )
+                ),
+                Cristal(
+                  ancho: ancho(context)-alto(context) * 0.01*2,
+                  alto: alto(context)*0.13,
+                  child: Container(
+                    child: Center(child: Humedad(humedad: 100)),
+                  )
+                )
+              ],
+            )
+          
+          );
+        }
       );
     }
     else{
       return 
-      Expanded(child: 
-        Center(
-          child: Text("Por favor gire su dispositivo"
-            ,style: TextStyle(fontSize: max(20,ancho(context)*0.02)
-                
-            ),
+      Center(
+        child: Text("Por favor gire su dispositivo"
+          ,style: TextStyle(fontSize: max(20,ancho(context)*0.02),
+              color: Colors.greenAccent
           ),
-        )
+        ),
       );
       
     }

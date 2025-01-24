@@ -53,11 +53,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBQRjvk3E4kuTDI4afR-epeV2LGrrXYOcQ',
-    appId: '1:350308208829:web:6bf559e10cc8dac1e167d4',
-    messagingSenderId: '350308208829',
-    projectId: 'totemfirebase-f1309',
-    authDomain: 'totemfirebase-f1309.firebaseapp.com',
-    storageBucket: 'totemfirebase-f1309.firebasestorage.app',
+    apiKey: 'AIzaSyAWoBKhnQmh2WsPEDaUaeEihPj6Rhty_ts',
+    appId: '1:691475427243:web:945a0857ee627f7fa96cee',
+    messagingSenderId: '691475427243',
+    projectId: 'totem-ambiental',
+    authDomain: 'totem-ambiental.firebaseapp.com',
+    storageBucket: 'totem-ambiental.firebasestorage.app',
   );
 }

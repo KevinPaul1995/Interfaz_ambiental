@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "totemfirebase-f1309"
-  }
+    "default": "totem-ambiental"
+  },
+  "targets": {},
+  "etags": {}
 }
