@@ -8,6 +8,10 @@
 3.2. seleccionar build/web
 4. flutter build web
 5. firebase deploy
+
+git add .
+git commit -m "correcciones termometro y streambuilder realizado"
+git push origin main
 */
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';

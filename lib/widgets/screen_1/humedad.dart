@@ -29,29 +29,94 @@ class _HumedadState extends State<Humedad> {
               //color: Colors.amber,
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Stack (
                     children: [
-                      //agregar dos container iguales de diferentes colores
-                      Container(
-              
-                        width: anchoBarra*widget.humedad/100,
-                        height: altoBarra,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 255, 153, 64),
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0),bottomLeft: Radius.circular(5.0),topRight: Radius.circular(widget.humedad==100?5:0),bottomRight: Radius.circular(widget.humedad==100?5:0))
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //agregar dos container iguales de diferentes colores
+                          Container(
+                                    
+                            width: anchoBarra*widget.humedad/100,
+                            height: altoBarra,
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 255, 153, 64),
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0),bottomLeft: Radius.circular(5.0),topRight: Radius.circular(widget.humedad==100?5:0),bottomRight: Radius.circular(widget.humedad==100?5:0))
+                            ),
+                          ),
+                          Container(
+                            width:anchoBarra- anchoBarra*widget.humedad/100,
+                            height: altoBarra,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              //redondear solo esquinas derechas
+                              borderRadius: BorderRadius.only(topRight: Radius.circular(5.0),bottomRight: Radius.circular(5.0),topLeft: Radius.circular(widget.humedad==0?5:0),bottomLeft: Radius.circular(widget.humedad==0?5:0))
+                      
+                            ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        width:anchoBarra- anchoBarra*widget.humedad/100,
-                        height: altoBarra,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          //redondear solo esquinas derechas
-                          borderRadius: BorderRadius.only(topRight: Radius.circular(5.0),bottomRight: Radius.circular(5.0),topLeft: Radius.circular(widget.humedad==0?5:0),bottomLeft: Radius.circular(widget.humedad==0?5:0))
-
-                        ),
+                      //agregar un row de 9 containers que simulen barras separadoras
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: 0.5,
+                            height: altoBarra,
+                            color: Colors.black,
+                          ),
+                          Container(
+                            width: 0.5,
+                            height: altoBarra,
+                            color: Colors.black,
+                          ),
+                          Container(
+                            width: 0.5,
+                            height: altoBarra,
+                            color: Colors.black,
+                          ),
+                          Container(
+                            width: 0.5,
+                            height: altoBarra,
+                            color: Colors.black,
+                          ),
+                          Container(
+                            width: 0.5,
+                            height: altoBarra,
+                            color: Colors.black,
+                          ),
+                          Container(
+                            width: 0.5,
+                            height: altoBarra,
+                            color: Colors.black,
+                          ),
+                          Container(
+                            width: 0.5,
+                            height: altoBarra,
+                            color: Colors.black,
+                          ),
+                          Container(
+                            width: 0.5,
+                            height: altoBarra,
+                            color: Colors.black,
+                          ),
+                          Container(
+                            width: 0.5,
+                            height: altoBarra,
+                            color: Colors.black,
+                          ),
+                          
+                        ],
                       ),
+                      // Crear una row de 3 textos
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text("SECO",style: TextStyle(color:Colors.black ,fontSize: max(18,ancho(context)*0.018),)),
+                          Text("ÓPTIMO",style: TextStyle(color:Colors.black,fontSize: max(18,ancho(context)*0.018),)),
+                          Text("HÚMEDO",style: TextStyle(color:Colors.black,fontSize: max(18,ancho(context)*0.018),)),
+                        ],
+                      )
                     ],
                   ),
                   Row(

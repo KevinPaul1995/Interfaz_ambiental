@@ -19,8 +19,19 @@ class CalidadAire extends StatefulWidget {
 class _CalidadAireState extends State<CalidadAire> {
   @override
   Widget build(BuildContext context) {
+    print('depurar: CalidadAire: ${widget.calidad}');
     //colores y mensaje
-    String mensaje = "Precaución";
+    Color color1 = Colors.white;
+    Color color2 = const Color.fromARGB(255, 98, 254, 82);
+    Color color3 = const Color.fromARGB(255, 195, 195, 195);
+    Color color4 = const Color.fromARGB(255, 255, 248, 61);
+    Color color5 = const Color.fromARGB(255, 255, 182, 27);
+    Color color6 = const Color.fromARGB(255, 235, 61, 62);
+    Color color_mensaje=widget.calidad<10?color1:widget.calidad<20?color2:widget.calidad<40?color3:widget.calidad<60?color4:widget.calidad<80?color5:color6;
+    String mensaje=widget.calidad<10?"Óptimo":widget.calidad<20?"Bueno":widget.calidad<40?"Precaución":widget.calidad<60?"Alerta":widget.calidad<80?"Alarma":"Emergencia";
+    
+
+    //String mensaje = "Precaución";
 
     // emojis y gauge
     double anchoGauge = alto(context) * 0.070;
@@ -64,7 +75,7 @@ class _CalidadAireState extends State<CalidadAire> {
                     //colocar bordes redondeados
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.orange,
+                      color: color_mensaje,
                     ),
                     
                     child: TextoConBorde(
@@ -100,6 +111,13 @@ class _CalidadAireState extends State<CalidadAire> {
                         ranges: <GaugeRange>[
                           GaugeRange(
                             startValue: 10,
+                            endValue: 10.5,
+                            color: Colors.black,
+                            startWidth: anchoGauge,
+                            endWidth: anchoGauge,
+                          ),
+                          GaugeRange(
+                            startValue: 10.5,
                             endValue: 20,
                             color: Colors.white,
                             startWidth: anchoGauge,
@@ -107,6 +125,13 @@ class _CalidadAireState extends State<CalidadAire> {
                           ),
                           GaugeRange(
                             startValue: 20,
+                            endValue: 20.5,
+                            color: Colors.black,
+                            startWidth: anchoGauge,
+                            endWidth: anchoGauge,
+                          ),
+                          GaugeRange(
+                            startValue: 20.5,
                             endValue: 30,
                             color: const Color.fromARGB(255, 98, 254, 82),
                             startWidth: anchoGauge,
@@ -114,6 +139,14 @@ class _CalidadAireState extends State<CalidadAire> {
                           ),
                           GaugeRange(
                             startValue: 30,
+                            endValue: 30.5,
+                            color: Colors.black,
+                            startWidth: anchoGauge,
+                            endWidth: anchoGauge,
+                          ),
+                          
+                          GaugeRange(
+                            startValue: 30.5,
                             endValue: 50,
                             color: const Color.fromARGB(255, 195, 195, 195),
                             startWidth: anchoGauge,
@@ -121,6 +154,13 @@ class _CalidadAireState extends State<CalidadAire> {
                           ),
                           GaugeRange(
                             startValue: 50,
+                            endValue: 50.5,
+                            color: Colors.black,
+                            startWidth: anchoGauge,
+                            endWidth: anchoGauge,
+                          ),
+                          GaugeRange(
+                            startValue: 50.5,
                             endValue: 70,
                             color: const Color.fromARGB(255, 255, 248, 61),
                             startWidth: anchoGauge,
@@ -128,6 +168,13 @@ class _CalidadAireState extends State<CalidadAire> {
                           ),
                           GaugeRange(
                             startValue: 70,
+                            endValue: 70.5,
+                            color: Colors.black,
+                            startWidth: anchoGauge,
+                            endWidth: anchoGauge,
+                          ),
+                          GaugeRange(
+                            startValue: 70.5,
                             endValue: 90,
                             color: const Color.fromARGB(255, 255, 182, 27),
                             startWidth: anchoGauge,
@@ -135,8 +182,22 @@ class _CalidadAireState extends State<CalidadAire> {
                           ),
                           GaugeRange(
                             startValue: 90,
-                            endValue: 110,
+                            endValue: 90.5,
+                            color: Colors.black,
+                            startWidth: anchoGauge,
+                            endWidth: anchoGauge,
+                          ),
+                          GaugeRange(
+                            startValue: 90.5,
+                            endValue: 109.5,
                             color: const Color.fromARGB(255, 235, 61, 62),
+                            startWidth: anchoGauge,
+                            endWidth: anchoGauge,
+                          ),
+                          GaugeRange(
+                            startValue: 109.5,
+                            endValue: 110,
+                            color: Colors.black,
                             startWidth: anchoGauge,
                             endWidth: anchoGauge,
                           ),
@@ -216,7 +277,7 @@ class _CalidadAireState extends State<CalidadAire> {
                         maximum: 110,
                         pointers: <GaugePointer>[
                           NeedlePointer(
-                            value: widget.calidad*0+15,
+                            value: widget.calidad+10,
                             enableAnimation: true,
                             animationDuration: 1000,
                             animationType: AnimationType.ease,

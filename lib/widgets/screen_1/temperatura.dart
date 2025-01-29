@@ -45,7 +45,7 @@ class _TemperaturaState extends State<Temperatura> {
             children: [
               Text("TEMPERATURA", style: TextStyle(fontSize: max(18,ancho(context)*0.018))),
               Expanded(
-                //color: Colors.red,
+                
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -57,9 +57,29 @@ class _TemperaturaState extends State<Temperatura> {
                       ),
                       height: alto(context)*0.25,
                       width: ancho(context)*0.25,
-                      child:  Termometro(
-                        color: color_temperaturas,
-                        grados: widget.grados, // Valor de prueba
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: alto(context)*0.005,
+                            left: ancho(context)*0.00, 
+                            right: ancho(context)*0.018,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text("°C", style: TextStyle(color:Colors.black,fontSize: max(13,ancho(context)*0.01))),
+                                //SizedBox(width: ancho(context)*0.07),
+                                Text("°F", style: TextStyle(color:Colors.black,fontSize: max(13,ancho(context)*0.01))),
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            top: alto(context)*0.02,
+                            child: Termometro(
+                              color: color_temperaturas,
+                              grados: widget.grados, // Valor de prueba
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                 
@@ -85,8 +105,9 @@ class _TemperaturaState extends State<Temperatura> {
                           ),                          
                           child: 
                           TextoConBorde(
-                            mensaje: " ${farenheit(widget.grados)}°F ", // Mensaje del texto
+                            // mostrar el valor con dos decimales
                             tam: max(15,ancho(context)*0.036), // Tamaño de la fuente
+                            mensaje: " ${farenheit(widget.grados).toStringAsFixed(2)}°F ", // Mensaje del texto                            tam: max(15,ancho(context)*0.036), // Tamaño de la fuente
                             relleno: Colors.white, // Color del relleno
                             borde: Colors.black, // Color del borde
                           ),
