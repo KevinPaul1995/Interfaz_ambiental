@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:interfaz/globals.dart';
 import 'package:interfaz/widgets/cristal.dart';
 
+import '../widgets/screen_2/temperatura.dart';
+
 class Screen_2 extends StatefulWidget {
   const Screen_2({super.key});
 
@@ -54,7 +56,7 @@ class _Screen_2State extends State<Screen_2> {
                   
                   alto: alto(context)*0.32,
                   child: Container(
-                    child: Center(child: Text(data?['temperatura'].toString() ?? 'Campo no disponible')),
+                    child: Center(child: TemperatureChart()),
                   )
                 ),
                 Cristal(
