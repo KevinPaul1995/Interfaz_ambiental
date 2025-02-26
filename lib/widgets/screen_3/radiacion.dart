@@ -6,67 +6,57 @@ import 'dart:math';
 
 import '../../globals.dart';
 
-class TemperatureChart extends StatefulWidget {
-  final int horaInicio;
+class RadiacionChart extends StatefulWidget {
+  final int minutos;
   final bool simular;
 
-  TemperatureChart({required this.horaInicio, this.simular = true});
+  RadiacionChart({required this.minutos, this.simular = true});
 
   @override
-  _TemperatureChartState createState() => _TemperatureChartState();
+  _RadiacionChartState createState() => _RadiacionChartState();
 }
 
-class _TemperatureChartState extends State<TemperatureChart> {
-  List<FlSpot> temperatureData = [];
-  late String horaInicio;
-  late String horaFin;
+class _RadiacionChartState extends State<RadiacionChart> {
+  List<FlSpot> radiacionData = [];
+  late String startTime;
+  late String endTime;
 
   @override
   void initState() {
     super.initState();
-    horaInicio = "${widget.horaInicio}:00";
-    horaFin = "${widget.horaInicio + 1}:00";
+    DateTime now = DateTime.now();
+    endTime = DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
+    startTime = DateFormat("yyyy-MM-dd HH:mm:ss").format(now.subtract(Duration(minutes: widget.minutos)));
     if(widget.simular) {
       generarDatosSimulados();
     } else {
-      fetchTemperatureData();
+      fetchRadiacionData();
     }
   }
 
-  Future<void> fetchTemperatureData() async {
-    // 1️⃣ Obtener la fecha actual
-    DateTime now = DateTime.now();
-
-    // 2️⃣ Determinar el último día válido según la hora actual
-    DateTime lastValidDay = now.hour < widget.horaInicio + 1 ? now.subtract(Duration(days: 1)) : now;
-
-    // 3️⃣ Formatear fecha para Firestore
-    String fechaFiltro = DateFormat("yyyy-MM-dd").format(lastValidDay);
-    String startTime = "$fechaFiltro $horaInicio:00";
-    String endTime = "$fechaFiltro $horaFin:00";
-
+  Future<void> fetchRadiacionData() async {
     try {
-      // 4️⃣ Consultar Firestore en la colección "historial"
+      // Consultar Firestore en la colección "historial"
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('historial3') // 🔥 Tu colección
+          .collection('historial3') // Tu colección
           .where('tiempo', isGreaterThanOrEqualTo: startTime)
           .where('tiempo', isLessThan: endTime)
-          .orderBy('tiempo') // 🔥 Necesario para ordenar los datos correctamente
+          .orderBy('tiempo') // Necesario para ordenar los datos correctamente
           .get();
 
       List<FlSpot> data = [];
       int index = 0;
 
       for (var doc in querySnapshot.docs) {
-        double temperatura = doc['temperatura'].toDouble();
+        double radiacion = doc['radiacion'].toDouble();
         String tiempo = doc['tiempo'];
-        data.add(FlSpot(index.toDouble(), temperatura));
-        print("Tiempo: $tiempo, Temperatura: $temperatura"); // Imprimir en consola
+        data.add(FlSpot(index.toDouble(), radiacion));
+        print("Tiempo: $tiempo, radiacion: $radiacion"); // Imprimir en consola
         index++;
       }
 
       setState(() {
-        temperatureData = data;
+        radiacionData = data;
       });
 
       print("Cantidad de elementos consultados: ${querySnapshot.docs.length}"); // Imprimir cantidad de elementos
@@ -80,18 +70,18 @@ class _TemperatureChartState extends State<TemperatureChart> {
     final random = Random();
     List<FlSpot> data = [];
     for (int i = 0; i < 700; i++) {
-      double temperatura = double.parse((random.nextDouble()*2+20 ).toStringAsFixed(2)); // 18 a 27
-      data.add(FlSpot(i.toDouble(), temperatura));
+      double radiacion = double.parse((random.nextDouble()*1.6+5.2 ).toStringAsFixed(2)); // 18 a 27
+      data.add(FlSpot(i.toDouble(), radiacion));
     }
     setState(() {
-      temperatureData = data;
+      radiacionData = data;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    double minY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
-    double maxY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double minY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
+    double maxY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
 
     return SafeArea(
       minimum: EdgeInsets.all(pantalla(context) * 0.01), // 🔹 Agregar padding de 8
@@ -100,13 +90,13 @@ class _TemperatureChartState extends State<TemperatureChart> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-              "Temperatura °C     Min: ${minY + 3}°C, Max: ${maxY - 3}°C",
+              "Índice de radiacion      Min: ${minY + 3}, Max: ${(maxY - 3).toStringAsFixed(2)}",
               style: TextStyle(fontSize: pantalla(context) * 0.02),
-            ), // 🔹 Mostrar rango de temperatura
+            ), // 🔹 Mostrar rango de radiacion
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10), // 🔹 Agregar padding de 8
-            child: temperatureData.isEmpty
+            child: radiacionData.isEmpty
                 ? Center(child: Text("No hay datos disponibles"))
                 : Row(
                     children: [
@@ -144,12 +134,12 @@ class _TemperatureChartState extends State<TemperatureChart> {
                                   borderData: FlBorderData(show: false),
                                   lineBarsData: [
                                     LineChartBarData(
-                                      spots: temperatureData,
+                                      spots: radiacionData,
                                       isCurved: true, // 🔹 Suaviza la línea
-                                      color: const Color.fromARGB(157, 105, 219, 12),
+                                      color: const Color.fromARGB(157, 234, 255, 0),
                                       barWidth: 0.5, // 🔹 Ajustar el grosor de la línea
                                       isStrokeCapRound: true,
-                                      belowBarData: BarAreaData(show: true, color: const Color.fromARGB(99, 9, 116, 170)),
+                                      belowBarData: BarAreaData(show: true, color: const Color.fromARGB(98, 189, 9, 224)),
                                       dotData: FlDotData(show: false), // ❌ Oculta los puntos para una línea continua
                                     ),
                                   ],
@@ -160,8 +150,8 @@ class _TemperatureChartState extends State<TemperatureChart> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                for (int i = 0; i <= 60; i += 15)
-                                  Text("$i min", style: TextStyle(fontSize: pantalla(context) * 0.015)),
+                                for (int i = 0; i <= 5; i += 1)
+                                  Text("${widget.minutos*i/5} min", style: TextStyle(fontSize: pantalla(context) * 0.015)),
                               ],
                             ),
                           ],

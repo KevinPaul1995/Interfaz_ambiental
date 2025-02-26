@@ -6,18 +6,18 @@ import 'dart:math';
 
 import '../../globals.dart';
 
-class TemperatureChart extends StatefulWidget {
+class HumedadChart extends StatefulWidget {
   final int horaInicio;
   final bool simular;
 
-  TemperatureChart({required this.horaInicio, this.simular = true});
+  HumedadChart({required this.horaInicio, this.simular = true});
 
   @override
-  _TemperatureChartState createState() => _TemperatureChartState();
+  _HumedadChartState createState() => _HumedadChartState();
 }
 
-class _TemperatureChartState extends State<TemperatureChart> {
-  List<FlSpot> temperatureData = [];
+class _HumedadChartState extends State<HumedadChart> {
+  List<FlSpot> humedadData = [];
   late String horaInicio;
   late String horaFin;
 
@@ -58,15 +58,15 @@ class _TemperatureChartState extends State<TemperatureChart> {
       int index = 0;
 
       for (var doc in querySnapshot.docs) {
-        double temperatura = doc['temperatura'].toDouble();
+        double humedad = doc['humedad'].toDouble();
         String tiempo = doc['tiempo'];
-        data.add(FlSpot(index.toDouble(), temperatura));
-        print("Tiempo: $tiempo, Temperatura: $temperatura"); // Imprimir en consola
+        data.add(FlSpot(index.toDouble(), humedad));
+        print("Tiempo: $tiempo, humedad: $humedad"); // Imprimir en consola
         index++;
       }
 
       setState(() {
-        temperatureData = data;
+        humedadData = data;
       });
 
       print("Cantidad de elementos consultados: ${querySnapshot.docs.length}"); // Imprimir cantidad de elementos
@@ -80,18 +80,18 @@ class _TemperatureChartState extends State<TemperatureChart> {
     final random = Random();
     List<FlSpot> data = [];
     for (int i = 0; i < 700; i++) {
-      double temperatura = double.parse((random.nextDouble()*2+20 ).toStringAsFixed(2)); // 18 a 27
-      data.add(FlSpot(i.toDouble(), temperatura));
+      double humedad = double.parse((random.nextDouble()*4.5+28 ).toStringAsFixed(2)); // 18 a 27
+      data.add(FlSpot(i.toDouble(), humedad));
     }
     setState(() {
-      temperatureData = data;
+      humedadData = data;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    double minY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
-    double maxY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double minY = humedadData.isNotEmpty ? humedadData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 20 : 0;
+    double maxY = humedadData.isNotEmpty ? humedadData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 20 : 0;
 
     return SafeArea(
       minimum: EdgeInsets.all(pantalla(context) * 0.01), // 🔹 Agregar padding de 8
@@ -100,13 +100,13 @@ class _TemperatureChartState extends State<TemperatureChart> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-              "Temperatura °C     Min: ${minY + 3}°C, Max: ${maxY - 3}°C",
+              "Humedad Relativa     Min: ${minY + 20}, Max: ${maxY - 20}",
               style: TextStyle(fontSize: pantalla(context) * 0.02),
-            ), // 🔹 Mostrar rango de temperatura
+            ), // 🔹 Mostrar rango de humedad
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10), // 🔹 Agregar padding de 8
-            child: temperatureData.isEmpty
+            child: humedadData.isEmpty
                 ? Center(child: Text("No hay datos disponibles"))
                 : Row(
                     children: [
@@ -144,7 +144,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
                                   borderData: FlBorderData(show: false),
                                   lineBarsData: [
                                     LineChartBarData(
-                                      spots: temperatureData,
+                                      spots: humedadData,
                                       isCurved: true, // 🔹 Suaviza la línea
                                       color: const Color.fromARGB(157, 105, 219, 12),
                                       barWidth: 0.5, // 🔹 Ajustar el grosor de la línea

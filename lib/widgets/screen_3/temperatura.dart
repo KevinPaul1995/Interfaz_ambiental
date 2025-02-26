@@ -7,10 +7,10 @@ import 'dart:math';
 import '../../globals.dart';
 
 class TemperatureChart extends StatefulWidget {
-  final int horaInicio;
+  final int minutos;
   final bool simular;
 
-  TemperatureChart({required this.horaInicio, this.simular = true});
+  TemperatureChart({required this.minutos, this.simular = true});
 
   @override
   _TemperatureChartState createState() => _TemperatureChartState();
@@ -18,14 +18,15 @@ class TemperatureChart extends StatefulWidget {
 
 class _TemperatureChartState extends State<TemperatureChart> {
   List<FlSpot> temperatureData = [];
-  late String horaInicio;
-  late String horaFin;
+  late String startTime;
+  late String endTime;
 
   @override
   void initState() {
     super.initState();
-    horaInicio = "${widget.horaInicio}:00";
-    horaFin = "${widget.horaInicio + 1}:00";
+    DateTime now = DateTime.now();
+    endTime = DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
+    startTime = DateFormat("yyyy-MM-dd HH:mm:ss").format(now.subtract(Duration(minutes: widget.minutos)));
     if(widget.simular) {
       generarDatosSimulados();
     } else {
@@ -34,24 +35,13 @@ class _TemperatureChartState extends State<TemperatureChart> {
   }
 
   Future<void> fetchTemperatureData() async {
-    // 1️⃣ Obtener la fecha actual
-    DateTime now = DateTime.now();
-
-    // 2️⃣ Determinar el último día válido según la hora actual
-    DateTime lastValidDay = now.hour < widget.horaInicio + 1 ? now.subtract(Duration(days: 1)) : now;
-
-    // 3️⃣ Formatear fecha para Firestore
-    String fechaFiltro = DateFormat("yyyy-MM-dd").format(lastValidDay);
-    String startTime = "$fechaFiltro $horaInicio:00";
-    String endTime = "$fechaFiltro $horaFin:00";
-
     try {
-      // 4️⃣ Consultar Firestore en la colección "historial"
+      // Consultar Firestore en la colección "historial"
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('historial3') // 🔥 Tu colección
+          .collection('historial3') // Tu colección
           .where('tiempo', isGreaterThanOrEqualTo: startTime)
           .where('tiempo', isLessThan: endTime)
-          .orderBy('tiempo') // 🔥 Necesario para ordenar los datos correctamente
+          .orderBy('tiempo') // Necesario para ordenar los datos correctamente
           .get();
 
       List<FlSpot> data = [];
@@ -146,10 +136,10 @@ class _TemperatureChartState extends State<TemperatureChart> {
                                     LineChartBarData(
                                       spots: temperatureData,
                                       isCurved: true, // 🔹 Suaviza la línea
-                                      color: const Color.fromARGB(157, 105, 219, 12),
+                                      color: const Color.fromARGB(157, 234, 255, 12),
                                       barWidth: 0.5, // 🔹 Ajustar el grosor de la línea
                                       isStrokeCapRound: true,
-                                      belowBarData: BarAreaData(show: true, color: const Color.fromARGB(99, 9, 116, 170)),
+                                      belowBarData: BarAreaData(show: true, color: const Color.fromARGB(98, 189, 9, 224)),
                                       dotData: FlDotData(show: false), // ❌ Oculta los puntos para una línea continua
                                     ),
                                   ],
@@ -160,8 +150,8 @@ class _TemperatureChartState extends State<TemperatureChart> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                for (int i = 0; i <= 60; i += 15)
-                                  Text("$i min", style: TextStyle(fontSize: pantalla(context) * 0.015)),
+                                for (int i = 0; i <= 5; i += 1)
+                                  Text("${widget.minutos*i/5} min", style: TextStyle(fontSize: pantalla(context) * 0.015)),
                               ],
                             ),
                           ],

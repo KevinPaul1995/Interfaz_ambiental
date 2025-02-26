@@ -125,37 +125,37 @@ class _HumedadState extends State<Humedad> {
                       Text("   0%",style: 
                         TextStyle(
                           color: Colors.white,
-                          fontSize: max(12,alto(context)*0.016)
+                          fontSize: max(12,alto(context)*0.02)
                         ),
                       ),
                       Text(" 20%",style: 
                         TextStyle(
                           color: Colors.white,
-                          fontSize: max(12,alto(context)*0.016)
+                          fontSize: max(12,alto(context)*0.02)
                         ),
                       ),
                       Text(" 40%",style: 
                         TextStyle(
-                          color: Colors.white,
-                          fontSize: max(12,alto(context)*0.016)
+                          color: Colors.lightGreenAccent,
+                          fontSize: max(12,alto(context)*0.02)
                         ),
                       ),
                       Text("60%",style: 
                         TextStyle(
-                          color: Colors.white,
-                          fontSize: max(12,alto(context)*0.016)
+                          color: Colors.lightGreenAccent,
+                          fontSize: max(12,alto(context)*0.02)
                         ),
                       ),
                       Text("80%",style: 
                         TextStyle(
-                          color: Colors.white,
-                          fontSize: max(12,alto(context)*0.016)
+                          color: const Color.fromARGB(255, 133, 216, 255),
+                          fontSize: max(12,alto(context)*0.02)
                         ),
                       ),
                       Text("100%",style: 
                         TextStyle(
-                          color: Colors.white,
-                          fontSize: max(12,alto(context)*0.016)
+                          color: const Color.fromARGB(255, 133, 216, 255),
+                          fontSize: max(12,alto(context)*0.02)
                         ),
                       )
                     ],

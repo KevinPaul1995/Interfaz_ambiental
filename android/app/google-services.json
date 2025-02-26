@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "691475427243",
+    "project_id": "totem-ambiental",
+    "storage_bucket": "totem-ambiental.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691475427243:android:6e4cff804098318fa96cee",
+        "android_client_info": {
+          "package_name": "com.xibernetiq.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvrf_nP9m_ELjFnNoki9hHV9ey-zEeIPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

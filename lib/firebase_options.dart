@@ -21,10 +21,7 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for ios - '
@@ -60,4 +57,13 @@ class DefaultFirebaseOptions {
     authDomain: 'totem-ambiental.firebaseapp.com',
     storageBucket: 'totem-ambiental.firebasestorage.app',
   );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyBvrf_nP9m_ELjFnNoki9hHV9ey-zEeIPM',
+    appId: '1:691475427243:android:6e4cff804098318fa96cee',
+    messagingSenderId: '691475427243',
+    projectId: 'totem-ambiental',
+    storageBucket: 'totem-ambiental.firebasestorage.app',
+  );
+
 }

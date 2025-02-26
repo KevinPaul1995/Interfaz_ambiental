@@ -4,7 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:interfaz/globals.dart';
 import 'package:interfaz/widgets/cristal.dart';
+import 'package:interfaz/widgets/screen_2/humedad.dart';
+import 'package:interfaz/widgets/screen_2/radiacion.dart';
 
+import '../generarDatos.dart';
+import '../widgets/screen_2/calidad_aire.dart';
+import '../widgets/screen_2/calor.dart';
 import '../widgets/screen_2/temperatura.dart';
 
 class Screen_2 extends StatefulWidget {
@@ -15,6 +20,8 @@ class Screen_2 extends StatefulWidget {
 }
 
 class _Screen_2State extends State<Screen_2> {
+  String dropdownValue = '12:00 a 13:00';
+
   @override
   Widget build(BuildContext context) {
     if(alto(context)>ancho(context)){
@@ -39,8 +46,8 @@ class _Screen_2State extends State<Screen_2> {
 
           // Ejemplo: Leer campos específicos
           final double grados = data?['temperatura'] ?? 'Campo no disponible';
-          final double calor = data?['calor'] ?? 'Campo no disponible';
-          final double radiacion = data?['radiacion'] ?? 'Campo no disponible';
+          final int calor = data?['calor'] ?? 'Campo no disponible';
+          final int radiacion = data?['radiacion'] ?? 'Campo no disponible';
           final double pm10 = data?['pm10'] ?? 'Campo no disponible';
           final double pm25 = data?['pm25'] ?? 'Campo no disponible';
           final double humedad = data?['humedad'] ?? 'Campo no disponible';
@@ -51,33 +58,93 @@ class _Screen_2State extends State<Screen_2> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                 Cristal(
+                  ancho: ancho(context)-alto(context) * 0.012,
+                  alto: alto(context)*0.08,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: DropdownButton<String>(
+                      value: dropdownValue,
+                      items: ['12:00 a 13:00', '13:00 a 14:00', '14:00 a 15:00']
+                          .map<DropdownMenuItem<String>>((value) {
+                          return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                        });
+                      },
+                    ),
+                  )
+                ),
                 Cristal(
                   ancho: ancho(context)-alto(context) * 0.01*2,
                   
                   alto: alto(context)*0.32,
                   child: Container(
-                    child: Center(child: TemperatureChart()),
+                    child: Center(child: TemperatureChart(
+                      horaInicio: dropdownValue == '12:00 a 13:00'
+                          ? 12
+                          : dropdownValue == '13:00 a 14:00'
+                              ? 13
+                              : 14,
+                    )),
                   )
                 ),
                 Cristal(
                   ancho: ancho(context)-alto(context) * 0.01*2,
-                  alto: alto(context)*0.12,
+                  
+                  alto: alto(context)*0.32,
                   child: Container(
-                    child: Center(child: Text(data?['radiacion'].toString() ?? 'Campo no disponible')),
+                    child: Center(child: CalorChart(
+                      horaInicio: dropdownValue == '12:00 a 13:00'
+                          ? 12
+                          : dropdownValue == '13:00 a 14:00'
+                              ? 13
+                              : 14,
+                    )),
                   )
                 ),
                 Cristal(
                   ancho: ancho(context)-alto(context) * 0.01*2,
-                  alto: alto(context)*0.16,
+                  alto: alto(context)*0.32,
                   child: Container(
-                    child: Center(child: Text(data?['pm10'].toString() ?? 'Campo no disponible')),
+                    child: Center(child: RadiacionChart(
+                      horaInicio: dropdownValue == '12:00 a 13:00'
+                          ? 12
+                          : dropdownValue == '13:00 a 14:00'
+                              ? 13
+                              : 14,
+                    )),
                   )
                 ),
                 Cristal(
                   ancho: ancho(context)-alto(context) * 0.01*2,
-                  alto: alto(context)*0.13,
+                  alto: alto(context)*0.32,
                   child: Container(
-                    child: Center(child: Text(data?['humedad'].toString() ?? 'Campo no disponible')),
+                    child: Center(child: CalidadChart(
+                      horaInicio: dropdownValue == '12:00 a 13:00'
+                          ? 12
+                          : dropdownValue == '13:00 a 14:00'
+                              ? 13
+                              : 14,
+                    )),
+                  )
+                ),
+                Cristal(
+                  ancho: ancho(context)-alto(context) * 0.01*2,
+                  alto: alto(context)*0.32,
+                  child: Container(
+                    child: Center(child: HumedadChart(
+                      horaInicio: dropdownValue == '12:00 a 13:00'
+                          ? 12
+                          : dropdownValue == '13:00 a 14:00'
+                              ? 13
+                              : 14,
+                    )),
                   )
                 )
               ],
@@ -88,9 +155,10 @@ class _Screen_2State extends State<Screen_2> {
       );
     }
     else{
-      return 
+      return GenerarDatosScreen();
+      return
       Center(
-        child: Text("Por favor gire su dispositivo"
+        child: Text("Hola mundo"
           ,style: TextStyle(fontSize: max(20,ancho(context)*0.02),
               color: Colors.greenAccent
           ),

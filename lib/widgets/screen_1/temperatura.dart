@@ -60,7 +60,7 @@ class _TemperaturaState extends State<Temperatura> {
                       child: Stack(
                         children: [
                           Positioned(
-                            top: alto(context)*0.005,
+                            top: alto(context)*0.001,
                             left: ancho(context)*0.00, 
                             right: ancho(context)*0.018,
                             child: Row(
@@ -180,7 +180,7 @@ class _TermometroState extends State<Termometro> {
               ),
               child: VerticalScale_C(initialValue: 50, finalValue: -10, numberOfLines: 7)
             ),
-            SizedBox(height: alto(context)*0.05),
+            SizedBox(height: alto(context)*0.07),
           ],
         ),
         Container( //container del termometro
@@ -233,18 +233,19 @@ class _TermometroState extends State<Termometro> {
             ],
           ),
         ),
-        Column( //columna de la escala c
+        Column( //columna de la escala F
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(// conatainer de la escala c
               height: alto(context)*tam_escala+alto(context)*0.02,
               width: ancho(context)*0.08,
               decoration: BoxDecoration(
+                
                 //color: Colors.red,
               ),
               child: VerticalScale_F(initialValue: 50, finalValue: -10, numberOfLines: 7)
             ),
-            SizedBox(height: alto(context)*0.05),
+            SizedBox(height: alto(context)*0.07),
           ],
         ),
       ],
