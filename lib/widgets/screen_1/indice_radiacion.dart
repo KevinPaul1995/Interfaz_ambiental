@@ -48,7 +48,7 @@ class _RadiacionState extends State<Radiacion> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal:  ancho(context)*0.01, vertical: alto(context)*0.005),
                     child: Center(// se centra un texto con borde
-                      child: TextoConBorde(mensaje: "Nivel: ${widget.radiacion}/$mensaje_radiacion", tam: alto(context)*0.018, relleno: Colors.white, borde: Colors.black),
+                      child: TextoConBorde(mensaje: "Nivel: ${widget.radiacion} / $mensaje_radiacion", tam: alto(context)*0.022, relleno: Colors.white, borde: Colors.black),
                     ),
                   ),
                 ),

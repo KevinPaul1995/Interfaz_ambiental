@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:interfaz/globals.dart';
 import 'package:interfaz/widgets/cristal.dart';
 import 'package:interfaz/widgets/screen_2/humedad.dart';
+import 'package:interfaz/widgets/screen_2/pm10.dart';
+import 'package:interfaz/widgets/screen_2/pm25.dart';
 import 'package:interfaz/widgets/screen_2/radiacion.dart';
 
 import '../generarDatos.dart';
@@ -125,7 +127,20 @@ class _Screen_2State extends State<Screen_2> {
                   ancho: ancho(context)-alto(context) * 0.01*2,
                   alto: alto(context)*0.32,
                   child: Container(
-                    child: Center(child: CalidadChart(
+                    child: Center(child: pm10Chart(
+                      horaInicio: dropdownValue == '12:00 a 13:00'
+                          ? 12
+                          : dropdownValue == '13:00 a 14:00'
+                              ? 13
+                              : 14,
+                    )),
+                  )
+                ),
+                Cristal(
+                  ancho: ancho(context)-alto(context) * 0.01*2,
+                  alto: alto(context)*0.32,
+                  child: Container(
+                    child: Center(child: pm25Chart(
                       horaInicio: dropdownValue == '12:00 a 13:00'
                           ? 12
                           : dropdownValue == '13:00 a 14:00'
