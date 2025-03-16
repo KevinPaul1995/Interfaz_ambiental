@@ -43,7 +43,7 @@ class _pm10ChartState extends State<pm10Chart> {
           .where('tiempo', isLessThan: endTime)
           .orderBy('tiempo') // Necesario para ordenar los datos correctamente
           .get();
-
+      
       List<FlSpot> data = [];
       int index = 0;
 
@@ -82,17 +82,40 @@ class _pm10ChartState extends State<pm10Chart> {
   Widget build(BuildContext context) {
     double minY = pm10Data.isNotEmpty ? pm10Data.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
     double maxY = pm10Data.isNotEmpty ? pm10Data.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double avgY = pm10Data.isNotEmpty ? pm10Data.map((e) => e.y).reduce((a, b) => a + b) / pm10Data.length : 0;
+
+    String formatValue(double value) {
+      return value % 1 == 0 ? value.toStringAsFixed(0) : value.toStringAsFixed(1);
+    }
 
     return SafeArea(
-      minimum: EdgeInsets.all(pantalla(context) * 0.01), // 🔹 Agregar padding de 8
+      minimum: EdgeInsets.all(pantalla(context) * 0.01), // Agregar padding de 8
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(10-pantalla(context) * 0.005), // 🔹 Bordes redondeados
+        borderRadius: BorderRadius.circular(10-pantalla(context) * 0.005), // Bordes redondeados
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              "PM10 (mg/m3)      Min: ${minY + 3}, Max: ${maxY - 3}",
-              style: TextStyle(fontSize: pantalla(context) * 0.02),
-            ), // 🔹 Mostrar rango de pm10
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "PM10 (mg/m3)   ",
+                  style: TextStyle(fontSize: pantalla(context) * 0.018),
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "Min: ${formatValue(minY + 3)}, Max: ${formatValue(maxY - 3)}",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                    Text(
+                      "Prom: ${formatValue(avgY)}",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                  ],
+                ),
+              ],
+            ), // Mostrar rango de pm10
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10), // 🔹 Agregar padding de 8

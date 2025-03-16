@@ -92,6 +92,11 @@ class _TemperatureChartState extends State<TemperatureChart> {
   Widget build(BuildContext context) {
     double minY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
     double maxY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double avgY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a + b) / temperatureData.length : 0;
+
+    String formatValue(double value) {
+      return value % 1 == 0 ? value.toStringAsFixed(0) : value.toStringAsFixed(1);
+    }
 
     return SafeArea(
       minimum: EdgeInsets.all(pantalla(context) * 0.01), // 🔹 Agregar padding de 8
@@ -99,9 +104,27 @@ class _TemperatureChartState extends State<TemperatureChart> {
         borderRadius: BorderRadius.circular(10-pantalla(context) * 0.005), // 🔹 Bordes redondeados
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              "Temperatura °C     Min: ${minY + 3}°C, Max: ${maxY - 3}°C",
-              style: TextStyle(fontSize: pantalla(context) * 0.02),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Temperatura °C   ",
+                  style: TextStyle(fontSize: pantalla(context) * 0.018),
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "Min: ${formatValue(minY + 3)}°C, Max: ${formatValue(maxY - 3)}°C",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                    Text(
+                      "Prom: ${formatValue(avgY)}°C",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                  ],
+                ),
+              ],
             ), // 🔹 Mostrar rango de temperatura
           ),
           body: Padding(
@@ -110,6 +133,21 @@ class _TemperatureChartState extends State<TemperatureChart> {
                 ? Center(child: Text("No hay datos disponibles"))
                 : Row(
                     children: [
+                      Container(
+                        width: pantalla(context) * 0.08, // 🔹 Ancho del gráfico
+                        height: pantalla(context) * 0.5, // 🔹 Alto del gráfico
+                        //color: Colors.red,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                              Text("${(minY + 3).toStringAsFixed(1)} °C", style: TextStyle(fontSize: pantalla(context) * 0.015)),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("${(minY - 3).toStringAsFixed(1)} °C", style: TextStyle(fontSize: pantalla(context) * 0.015)),
+                              ),
+                          ],
+                        ),
+                      ),
                       Expanded(
                         child: Column(
                           children: [

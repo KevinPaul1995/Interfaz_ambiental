@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Provider_pantalla with ChangeNotifier {
-  int _indice = 0;
+  int _indice = 1;
 
   int get currentIndex => _indice;
 

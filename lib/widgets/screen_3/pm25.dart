@@ -82,17 +82,41 @@ class _pm25ChartState extends State<pm25Chart> {
   Widget build(BuildContext context) {
     double minY = pm25Data.isNotEmpty ? pm25Data.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
     double maxY = pm25Data.isNotEmpty ? pm25Data.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double avgY = pm25Data.isNotEmpty ? pm25Data.map((e) => e.y).reduce((a, b) => a + b) / pm25Data.length : 0;
+
+    String formatValue(double value) {
+      return value % 1 == 0 ? value.toStringAsFixed(0) : value.toStringAsFixed(1);
+    }
 
     return SafeArea(
-      minimum: EdgeInsets.all(pantalla(context) * 0.01), // 🔹 Agregar padding de 8
+      minimum: EdgeInsets.all(pantalla(context) * 0.01), // Agregar padding de 8
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(10-pantalla(context) * 0.005), // 🔹 Bordes redondeados
+        borderRadius: BorderRadius.circular(10-pantalla(context) * 0.005), // Bordes redondeados
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              "PM25 (mg/m3)      Min: ${minY + 3}, Max: ${maxY - 3}",
-              style: TextStyle(fontSize: pantalla(context) * 0.02),
-            ), // 🔹 Mostrar rango de pm25
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "PM25 (mg/m3)   ",
+                  style: TextStyle(fontSize: pantalla(context) * 0.018),
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "Min: ${formatValue(minY + 3)}, Max: ${formatValue(maxY - 3)}",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                    Text(
+                      "Prom: ${formatValue(avgY)}",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                  ],
+                ),
+              ],
+            ), // Mostrar rango de pm25
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10), // 🔹 Agregar padding de 8

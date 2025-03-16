@@ -93,7 +93,7 @@ class _TemperaturaState extends State<Temperatura> {
                           ),
                           child: TextoConBorde(
                               mensaje: " ${widget.grados} °C ", // Mensaje del texto
-                              tam: max(15,ancho(context)*0.036), // Tamaño de la fuente
+                              tam: max(22,ancho(context)*0.036), // Tamaño de la fuente
                               relleno: Colors.white, // Color del relleno
                               borde: Colors.black, // Color del borde
                             ),
@@ -106,7 +106,7 @@ class _TemperaturaState extends State<Temperatura> {
                           child: 
                           TextoConBorde(
                             // mostrar el valor con dos decimales
-                            tam: max(15,ancho(context)*0.036), // Tamaño de la fuente
+                            tam: max(22,ancho(context)*0.036), // Tamaño de la fuente
                             mensaje: " ${farenheit(widget.grados).toStringAsFixed(2)} °F ", // Mensaje del texto                            tam: max(15,ancho(context)*0.036), // Tamaño de la fuente
                             relleno: Colors.white, // Color del relleno
                             borde: Colors.black, // Color del borde
@@ -126,7 +126,7 @@ class _TemperaturaState extends State<Temperatura> {
                                   padding: EdgeInsets.all(alto(context)*0.01),
                                   child: TextoConBorde(
                                     mensaje: " $mensaje_calor ", // Mensaje del texto
-                                    tam: max(15,ancho(context)*0.033), // Tamaño de la fuente
+                                    tam: max(22,ancho(context)*0.033), // Tamaño de la fuente
                                     relleno: Colors.white, // Color del relleno
                                     borde: Colors.black, // Color del borde
                                   ),

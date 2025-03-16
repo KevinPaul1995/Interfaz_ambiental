@@ -80,7 +80,7 @@ class _HumedadChartState extends State<HumedadChart> {
     final random = Random();
     List<FlSpot> data = [];
     for (int i = 0; i < 700; i++) {
-      double humedad = double.parse((random.nextDouble()*4.5+28 ).toStringAsFixed(2)); // 18 a 27
+      double humedad = double.parse((random.nextDouble()*0.1527+28 ).toStringAsFixed(2)); // 18 a 27
       data.add(FlSpot(i.toDouble(), humedad));
     }
     setState(() {
@@ -92,6 +92,11 @@ class _HumedadChartState extends State<HumedadChart> {
   Widget build(BuildContext context) {
     double minY = humedadData.isNotEmpty ? humedadData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 20 : 0;
     double maxY = humedadData.isNotEmpty ? humedadData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 20 : 0;
+    double avgY = humedadData.isNotEmpty ? humedadData.map((e) => e.y).reduce((a, b) => a + b) / humedadData.length : 0;
+
+    String formatValue(double value) {
+      return value % 1 == 0 ? value.toStringAsFixed(0) : value.toStringAsFixed(1);
+    }
 
     return SafeArea(
       minimum: EdgeInsets.all(pantalla(context) * 0.01), // 🔹 Agregar padding de 8
@@ -99,9 +104,27 @@ class _HumedadChartState extends State<HumedadChart> {
         borderRadius: BorderRadius.circular(10-pantalla(context) * 0.005), // 🔹 Bordes redondeados
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              "Humedad Relativa     Min: ${minY + 20}, Max: ${maxY - 20}",
-              style: TextStyle(fontSize: pantalla(context) * 0.02),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Humedad Relativa   ",
+                  style: TextStyle(fontSize: pantalla(context) * 0.018),
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "Min: ${formatValue(minY + 20)}, Max: ${formatValue(maxY - 20)}",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                    Text(
+                      "Prom: ${formatValue(avgY)}",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                  ],
+                ),
+              ],
             ), // 🔹 Mostrar rango de humedad
           ),
           body: Padding(

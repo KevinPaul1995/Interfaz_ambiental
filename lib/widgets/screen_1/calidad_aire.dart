@@ -35,10 +35,10 @@ class _CalidadAireState extends State<CalidadAire> {
 
     // emojis y gauge
     double anchoGauge = alto(context) * 0.070;
-    double altoDisponibleGauge = alto(context) * 0.16-alto(context)*0.01*2;
-    double tamEmoji = alto(context) * 0.028;
+    double altoDisponibleGauge = alto(context) * 0.14-alto(context)*0.01*2;
+    double tamEmoji = alto(context) * 0.025;
     double emojiRadius = alto(context)*0.0012; // Radio del gauge para posicionar el emoji
-    double hipotenusa=altoDisponibleGauge*0.68;
+    double hipotenusa=altoDisponibleGauge*0.78; //distancia de los emojis al centro
     double gaugeCenterX = altoDisponibleGauge; // Centro aproximado del gauge
     double gaugeCenterY = 0; // Centro aproximado del gauge
     List<double> angles = [180,158,130,90,50,5];
@@ -81,7 +81,7 @@ class _CalidadAireState extends State<CalidadAire> {
                     child: TextoConBorde(
                       mensaje: mensaje, 
                       tam: 
-                      max(15,ancho(context)*0.02),
+                      max(22,ancho(context)*0.02),
                       relleno: Colors.white, 
                       borde: Colors.black
                     )

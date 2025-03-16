@@ -10,7 +10,6 @@ import 'package:interfaz/widgets/screen_2/pm25.dart';
 import 'package:interfaz/widgets/screen_2/radiacion.dart';
 
 import '../generarDatos.dart';
-import '../widgets/screen_2/calidad_aire.dart';
 import '../widgets/screen_2/calor.dart';
 import '../widgets/screen_2/temperatura.dart';
 

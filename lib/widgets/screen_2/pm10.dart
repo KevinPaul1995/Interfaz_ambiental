@@ -93,6 +93,11 @@ class _pm10ChartState extends State<pm10Chart> {
   Widget build(BuildContext context) {
     double minY = calidadData.isNotEmpty ? calidadData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
     double maxY = calidadData.isNotEmpty ? calidadData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double avgY = calidadData.isNotEmpty ? calidadData.map((e) => e.y).reduce((a, b) => a + b) / calidadData.length : 0;
+
+    String formatValue(double value) {
+      return value % 1 == 0 ? value.toStringAsFixed(0) : value.toStringAsFixed(1);
+    }
 
     return SafeArea(
       minimum: EdgeInsets.all(pantalla(context) * 0.01), // 🔹 Agregar padding de 8
@@ -100,9 +105,27 @@ class _pm10ChartState extends State<pm10Chart> {
         borderRadius: BorderRadius.circular(10-pantalla(context) * 0.005), // 🔹 Bordes redondeados
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              "PM10 (mg/m3)      Min: ${minY + 3}, Max: ${maxY - 3}",
-              style: TextStyle(fontSize: pantalla(context) * 0.02),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "PM10 (mg/m3)   ",
+                  style: TextStyle(fontSize: pantalla(context) * 0.018),
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "Min: ${formatValue(minY + 3)}, Max: ${formatValue(maxY - 3)}",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                    Text(
+                      "Prom: ${formatValue(avgY)}",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                  ],
+                ),
+              ],
             ), // 🔹 Mostrar rango de calidad
           ),
           body: Padding(

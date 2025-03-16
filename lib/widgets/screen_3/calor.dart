@@ -82,6 +82,11 @@ class _CalorChartState extends State<CalorChart> {
   Widget build(BuildContext context) {
     double minY = calorData.isNotEmpty ? calorData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
     double maxY = calorData.isNotEmpty ? calorData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double avgY = calorData.isNotEmpty ? calorData.map((e) => e.y).reduce((a, b) => a + b) / calorData.length : 0;
+
+    String formatValue(double value) {
+      return value % 1 == 0 ? value.toStringAsFixed(0) : value.toStringAsFixed(1);
+    }
 
     return SafeArea(
       minimum: EdgeInsets.all(pantalla(context) * 0.01), // Agregar padding de 8
@@ -89,9 +94,27 @@ class _CalorChartState extends State<CalorChart> {
         borderRadius: BorderRadius.circular(10-pantalla(context) * 0.005), // Bordes redondeados
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              "Índice de Calor      Min: ${minY + 3}, Max: ${maxY - 3}",
-              style: TextStyle(fontSize: pantalla(context) * 0.02),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Índice de Calor   ",
+                  style: TextStyle(fontSize: pantalla(context) * 0.018),
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "Min: ${formatValue(minY + 3)}, Max: ${formatValue(maxY - 3)}",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                    Text(
+                      "Prom: ${formatValue(avgY)}",
+                      style: TextStyle(fontSize: pantalla(context) * 0.018),
+                    ),
+                  ],
+                ),
+              ],
             ), // Mostrar rango de calor
           ),
           body: Padding(
