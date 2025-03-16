@@ -8,8 +8,9 @@ import 'package:interfaz/widgets/screen_3/humedad.dart';
 import 'package:interfaz/widgets/screen_3/radiacion.dart';
 
 import '../generarDatos.dart';
-import '../widgets/screen_3/calidad_aire.dart';
+import '../widgets/screen_3/pm10.dart';
 import '../widgets/screen_3/calor.dart';
+import '../widgets/screen_3/pm25.dart';
 import '../widgets/screen_3/temperatura.dart';
 
 class Screen_3 extends StatefulWidget {
@@ -131,7 +132,22 @@ class _Screen_3State extends State<Screen_3> {
                   alto: alto(context) * 0.32,
                   child: Container(
                     child: Center(
-                      child: CalidadChart(
+                      child: pm10Chart(
+                        minutos: dropdownValue == '5 minutos'
+                            ? 5
+                            : dropdownValue == '10 minutos'
+                                ? 10
+                                : 15,
+                      ),
+                    ),
+                  ),
+                ),
+                Cristal(
+                  ancho: ancho(context) - alto(context) * 0.01 * 2,
+                  alto: alto(context) * 0.32,
+                  child: Container(
+                    child: Center(
+                      child: pm25Chart(
                         minutos: dropdownValue == '5 minutos'
                             ? 5
                             : dropdownValue == '10 minutos'

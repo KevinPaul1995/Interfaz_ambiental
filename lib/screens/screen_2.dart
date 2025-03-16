@@ -67,7 +67,7 @@ class _Screen_2State extends State<Screen_2> {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: DropdownButton<String>(
                       value: dropdownValue,
-                      items: ['12:00 a 13:00', '13:00 a 14:00', '14:00 a 15:00']
+                      items: ['10:00 a 11:00', '11:00 a 12:00', '12:00 a 13:00', '13:00 a 14:00']
                           .map<DropdownMenuItem<String>>((value) {
                           return DropdownMenuItem<String>(
                           value: value,
@@ -88,11 +88,13 @@ class _Screen_2State extends State<Screen_2> {
                   alto: alto(context)*0.32,
                   child: Container(
                     child: Center(child: TemperatureChart(
-                      horaInicio: dropdownValue == '12:00 a 13:00'
-                          ? 12
-                          : dropdownValue == '13:00 a 14:00'
-                              ? 13
-                              : 14,
+                      horaInicio: dropdownValue == '10:00 a 11:00'
+                          ? 10
+                          : dropdownValue == '11:00 a 12:00'
+                              ? 11
+                              : dropdownValue == '12:00 a 13:00'
+                                  ? 12
+                                  : 13,
                     )),
                   )
                 ),
@@ -102,11 +104,13 @@ class _Screen_2State extends State<Screen_2> {
                   alto: alto(context)*0.32,
                   child: Container(
                     child: Center(child: CalorChart(
-                      horaInicio: dropdownValue == '12:00 a 13:00'
-                          ? 12
-                          : dropdownValue == '13:00 a 14:00'
-                              ? 13
-                              : 14,
+                      horaInicio: dropdownValue == '10:00 a 11:00'
+                          ? 10
+                          : dropdownValue == '11:00 a 12:00'
+                              ? 11
+                              : dropdownValue == '12:00 a 13:00'
+                                  ? 12
+                                  : 13,
                     )),
                   )
                 ),
@@ -115,11 +119,13 @@ class _Screen_2State extends State<Screen_2> {
                   alto: alto(context)*0.32,
                   child: Container(
                     child: Center(child: RadiacionChart(
-                      horaInicio: dropdownValue == '12:00 a 13:00'
-                          ? 12
-                          : dropdownValue == '13:00 a 14:00'
-                              ? 13
-                              : 14,
+                      horaInicio: dropdownValue == '10:00 a 11:00'
+                          ? 10
+                          : dropdownValue == '11:00 a 12:00'
+                              ? 11
+                              : dropdownValue == '12:00 a 13:00'
+                                  ? 12
+                                  : 13,
                     )),
                   )
                 ),
@@ -128,11 +134,13 @@ class _Screen_2State extends State<Screen_2> {
                   alto: alto(context)*0.32,
                   child: Container(
                     child: Center(child: pm10Chart(
-                      horaInicio: dropdownValue == '12:00 a 13:00'
-                          ? 12
-                          : dropdownValue == '13:00 a 14:00'
-                              ? 13
-                              : 14,
+                      horaInicio: dropdownValue == '10:00 a 11:00'
+                          ? 10
+                          : dropdownValue == '11:00 a 12:00'
+                              ? 11
+                              : dropdownValue == '12:00 a 13:00'
+                                  ? 12
+                                  : 13,
                     )),
                   )
                 ),
@@ -141,11 +149,13 @@ class _Screen_2State extends State<Screen_2> {
                   alto: alto(context)*0.32,
                   child: Container(
                     child: Center(child: pm25Chart(
-                      horaInicio: dropdownValue == '12:00 a 13:00'
-                          ? 12
-                          : dropdownValue == '13:00 a 14:00'
-                              ? 13
-                              : 14,
+                      horaInicio: dropdownValue == '10:00 a 11:00'
+                          ? 10
+                          : dropdownValue == '11:00 a 12:00'
+                              ? 11
+                              : dropdownValue == '12:00 a 13:00'
+                                  ? 12
+                                  : 13,
                     )),
                   )
                 ),
@@ -154,11 +164,13 @@ class _Screen_2State extends State<Screen_2> {
                   alto: alto(context)*0.32,
                   child: Container(
                     child: Center(child: HumedadChart(
-                      horaInicio: dropdownValue == '12:00 a 13:00'
-                          ? 12
-                          : dropdownValue == '13:00 a 14:00'
-                              ? 13
-                              : 14,
+                      horaInicio: dropdownValue == '10:00 a 11:00'
+                          ? 10
+                          : dropdownValue == '11:00 a 12:00'
+                              ? 11
+                              : dropdownValue == '12:00 a 13:00'
+                                  ? 12
+                                  : 13,
                     )),
                   )
                 )
