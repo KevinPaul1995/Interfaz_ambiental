@@ -16,7 +16,6 @@ git push origin main
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:interfaz/firebase_options.dart';
 import 'package:interfaz/providers/screen_provider.dart';
 import 'package:interfaz/screens/dashboard.dart';
