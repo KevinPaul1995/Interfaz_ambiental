@@ -35,10 +35,10 @@ class _CalidadAireState extends State<CalidadAire> {
 
     // emojis y gauge
     double anchoGauge = alto(context) * 0.070;
-    double altoDisponibleGauge = alto(context) * 0.14-alto(context)*0.01*2;
-    double tamEmoji = alto(context) * 0.025;
-    double emojiRadius = alto(context)*0.0012; // Radio del gauge para posicionar el emoji
-    double hipotenusa=altoDisponibleGauge*0.78; //distancia de los emojis al centro
+    double altoDisponibleGauge = alto(context) * 0.12-alto(context)*0.015*2;
+    double tamEmoji = alto(context) * 0.02;
+    double emojiRadius = alto(context)*0.0019; // Radio del gauge para posicionar el emoji
+    double hipotenusa=altoDisponibleGauge*0.8; //distancia de los emojis
     double gaugeCenterX = altoDisponibleGauge; // Centro aproximado del gauge
     double gaugeCenterY = 0; // Centro aproximado del gauge
     List<double> angles = [180,158,130,90,50,5];
@@ -98,7 +98,7 @@ class _CalidadAireState extends State<CalidadAire> {
                     enableLoadingAnimation: true,
                     axes: <RadialAxis>[
                       RadialAxis(
-                        radiusFactor: 1.75,//espacio disponible
+                        radiusFactor: 1.6,//espacio disponible
                         centerX: 0.5,
                         centerY: 1,
                         showAxisLine: false,
@@ -265,7 +265,7 @@ class _CalidadAireState extends State<CalidadAire> {
                     enableLoadingAnimation: true,
                     axes: <RadialAxis>[
                       RadialAxis(
-                        radiusFactor: 2,//espacio disponible
+                        radiusFactor: 1.5,//espacio disponible
                         centerX: 0.5,
                         centerY: 1,
                         showAxisLine: false,

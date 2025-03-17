@@ -6,6 +6,7 @@ import '../globals.dart';
 import 'screen_1.dart';
 import 'screen_2.dart';
 import 'screen_3.dart';
+import 'screen_4.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -24,6 +25,7 @@ class _DashboardState extends State<Dashboard> {
       Screen_1(),
       Screen_2(),
       Screen_3(),
+      Screen_4(), // Asegurarse de que Screen_4 está en la lista
     ];
     return Scaffold(
       appBar: AppBar(
@@ -37,16 +39,66 @@ class _DashboardState extends State<Dashboard> {
       ), // Cambia la pantalla según el índice actual
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(vertical: alto(context) * 0.01, horizontal: ancho(context) * 0.005),
-        child: BottomNavigationBar(
-          currentIndex: navigationProvider.currentIndex,
-          onTap: (index) {
-            navigationProvider.changeScreen(index); // Cambia el índice al pulsar un botón
-          },
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Tiempo real"),
-            BottomNavigationBarItem(icon: Icon(Icons.manage_history), label: "Intervalos"),
-            BottomNavigationBarItem(icon: Icon(Icons.timelapse_sharp), label: "Últimos minutos"),
-          ],
+        child: Container(
+          color: Colors.black, // Fondo negro
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.home, size: 30, color: Colors.white), // Ícono más grande
+                        onPressed: () {
+                          navigationProvider.changeScreen(0);
+                        },
+                      ),
+                      Text("Tiempo real", style: TextStyle(color: Colors.white, fontSize: 12)),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.manage_history, size: 30, color: Colors.white), // Ícono más grande
+                        onPressed: () {
+                          navigationProvider.changeScreen(1);
+                        },
+                      ),
+                      Text("Intervalos", style: TextStyle(color: Colors.white, fontSize: 12)),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.timelapse_sharp, size: 30, color: Colors.white), // Ícono más grande
+                        onPressed: () {
+                          navigationProvider.changeScreen(2);
+                        },
+                      ),
+                      Text("Últimos minutos", style: TextStyle(color: Colors.white, fontSize: 12)),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.recommend, size: 30, color: Colors.white), // Ícono más grande
+                        onPressed: () {
+                          navigationProvider.changeScreen(3);
+                        },
+                      ),
+                      Text("Recomendaciones", style: TextStyle(color: Colors.white, fontSize: 12)),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

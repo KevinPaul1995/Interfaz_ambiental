@@ -32,10 +32,17 @@ class _TemperaturaState extends State<Temperatura> {
   final Color color10=const Color.fromARGB(255,157,68,244);
   final Color color11=const Color.fromARGB(255,0,0,0);
   
+  final String imagen1="assets/t1.png";
+  final String imagen2="assets/t2.png";
+  final String imagen3="assets/t3.jpg";
+  final String imagen4="assets/t4.jpg";
+  final String imagen5="assets/t5.png";
+  
   @override
   Widget build(BuildContext context) {
   String mensaje_calor=widget.calor<26?"Seguro":widget.calor<32?"Precaución":widget.calor<40?"Precaución extrema":widget.calor<51?"Peligro":widget.calor<92?"Peligro extremo":"Mortal";
   Color color_temperaturas=widget.grados<0?color1:widget.grados<18?color2:widget.grados<24?color3:widget.grados<35?color4:color5;
+  String imagen=widget.grados<0?imagen1:widget.grados<18?imagen2:widget.grados<24?imagen3:widget.grados<35?imagen4:imagen5;
   Color color_calor=widget.calor<26?color6:widget.calor<32?color7:widget.calor<40?color8:widget.calor<51?color9:widget.calor<92?color10:color11;
     return Padding(
       padding: EdgeInsets.all(alto(context)*0.01),
@@ -45,7 +52,6 @@ class _TemperaturaState extends State<Temperatura> {
             children: [
               Text("TEMPERATURA", style: TextStyle(fontSize: max(18,ancho(context)*0.018))),
               Expanded(
-                
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -86,6 +92,14 @@ class _TemperaturaState extends State<Temperatura> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
+                        //agregar una imagen de termometro
+                        Padding(
+                          padding: EdgeInsets.all(alto(context)*0.0),
+                          child: Image.asset(
+                            imagen, // Ruta de la imagen
+                            height: alto(context) * 0.065, // Ajustar el tamaño de la imagen
+                          ),
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             color: color_temperaturas,
@@ -97,7 +111,7 @@ class _TemperaturaState extends State<Temperatura> {
                               relleno: Colors.white, // Color del relleno
                               borde: Colors.black, // Color del borde
                             ),
-                          ),
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             color: color_temperaturas,

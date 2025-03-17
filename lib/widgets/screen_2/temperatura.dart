@@ -90,8 +90,9 @@ class _TemperatureChartState extends State<TemperatureChart> {
 
   @override
   Widget build(BuildContext context) {
-    double minY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
-    double maxY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double minY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 0 : 0;
+    double maxY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 0   : 0; 
+    
     double avgY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a + b) / temperatureData.length : 0;
 
     String formatValue(double value) {
@@ -106,6 +107,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
           appBar: AppBar(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -115,7 +117,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
                 Column(
                   children: [
                     Text(
-                      "Min: ${formatValue(minY + 3)}°C, Max: ${formatValue(maxY - 3)}°C",
+                      "Min: ${formatValue(minY)}°C, Max: ${formatValue(maxY)}°C",
                       style: TextStyle(fontSize: pantalla(context) * 0.018),
                     ),
                     Text(
@@ -134,16 +136,22 @@ class _TemperatureChartState extends State<TemperatureChart> {
                 : Row(
                     children: [
                       Container(
-                        width: pantalla(context) * 0.08, // 🔹 Ancho del gráfico
+                        width: pantalla(context) * 0.04, // 🔹 Ancho del gráfico
                         height: pantalla(context) * 0.5, // 🔹 Alto del gráfico
                         //color: Colors.red,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                              Text("${(minY + 3).toStringAsFixed(1)} °C", style: TextStyle(fontSize: pantalla(context) * 0.015)),
+                              RotatedBox(
+                                quarterTurns: 3,
+                                child: Text("${(40)}", style: TextStyle(fontSize: pantalla(context) * 0.015))
+                              ),
+                              
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text("${(minY - 3).toStringAsFixed(1)} °C", style: TextStyle(fontSize: pantalla(context) * 0.015)),
+                                child: RotatedBox(
+                                  quarterTurns: 3,
+                                  child: Text("${(0).toStringAsFixed(1)}", style: TextStyle(fontSize: pantalla(context) * 0.015))),
                               ),
                           ],
                         ),
@@ -154,8 +162,8 @@ class _TemperatureChartState extends State<TemperatureChart> {
                             Expanded(
                               child: LineChart(
                                 LineChartData(
-                                  minY: minY,
-                                  maxY: maxY,
+                                  minY: 0,
+                                  maxY: 45,
                                   titlesData: FlTitlesData(
                                     bottomTitles: AxisTitles(
                                       sideTitles: SideTitles(

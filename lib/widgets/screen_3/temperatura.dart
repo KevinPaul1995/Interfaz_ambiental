@@ -96,7 +96,6 @@ class _TemperatureChartState extends State<TemperatureChart> {
           appBar: AppBar(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
