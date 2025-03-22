@@ -10,7 +10,7 @@ class CalorChart extends StatefulWidget {
   final int minutos;
   final bool simular;
 
-  CalorChart({required this.minutos, this.simular = true});
+  CalorChart({required this.minutos, this.simular = false});
 
   @override
   _CalorChartState createState() => _CalorChartState();
@@ -38,7 +38,7 @@ class _CalorChartState extends State<CalorChart> {
     try {
       // Consultar Firestore en la colección "historial"
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('historial3') // Tu colección
+          .collection('historial') // Tu colección
           .where('tiempo', isGreaterThanOrEqualTo: startTime)
           .where('tiempo', isLessThan: endTime)
           .orderBy('tiempo') // Necesario para ordenar los datos correctamente
@@ -80,8 +80,8 @@ class _CalorChartState extends State<CalorChart> {
 
   @override
   Widget build(BuildContext context) {
-    double minY = calorData.isNotEmpty ? calorData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
-    double maxY = calorData.isNotEmpty ? calorData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double minY = calorData.isNotEmpty ? calorData.map((e) => e.y).reduce((a, b) => a < b ? a : b): 0;
+    double maxY = calorData.isNotEmpty ? calorData.map((e) => e.y).reduce((a, b) => a > b ? a : b): 0;
     double avgY = calorData.isNotEmpty ? calorData.map((e) => e.y).reduce((a, b) => a + b) / calorData.length : 0;
 
     String formatValue(double value) {
@@ -105,7 +105,7 @@ class _CalorChartState extends State<CalorChart> {
                 Column(
                   children: [
                     Text(
-                      "Min: ${formatValue(minY + 3)}, Max: ${formatValue(maxY - 3)}",
+                      "Min: ${formatValue(minY)}, Max: ${formatValue(maxY)}",
                       style: TextStyle(fontSize: pantalla(context) * 0.018),
                     ),
                     Text(
@@ -129,8 +129,8 @@ class _CalorChartState extends State<CalorChart> {
                             Expanded(
                               child: LineChart(
                                 LineChartData(
-                                  minY: minY,
-                                  maxY: maxY,
+                                  minY: minY*0.5,
+                                  maxY: maxY*1.5,
                                   titlesData: FlTitlesData(
                                     bottomTitles: AxisTitles(
                                       sideTitles: SideTitles(

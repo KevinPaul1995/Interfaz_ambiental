@@ -10,7 +10,7 @@ class pm25Chart extends StatefulWidget {
   final int minutos;
   final bool simular;
 
-  pm25Chart({required this.minutos, this.simular = true});
+  pm25Chart({required this.minutos, this.simular = false});
 
   @override
   _pm25ChartState createState() => _pm25ChartState();
@@ -38,7 +38,7 @@ class _pm25ChartState extends State<pm25Chart> {
     try {
       // Consultar Firestore en la colección "historial"
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('historial3') // Tu colección
+          .collection('historial') // Tu colección
           .where('tiempo', isGreaterThanOrEqualTo: startTime)
           .where('tiempo', isLessThan: endTime)
           .orderBy('tiempo') // Necesario para ordenar los datos correctamente
@@ -80,8 +80,8 @@ class _pm25ChartState extends State<pm25Chart> {
 
   @override
   Widget build(BuildContext context) {
-    double minY = pm25Data.isNotEmpty ? pm25Data.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
-    double maxY = pm25Data.isNotEmpty ? pm25Data.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double minY = pm25Data.isNotEmpty ? pm25Data.map((e) => e.y).reduce((a, b) => a < b ? a : b): 0;
+    double maxY = pm25Data.isNotEmpty ? pm25Data.map((e) => e.y).reduce((a, b) => a > b ? a : b): 0;
     double avgY = pm25Data.isNotEmpty ? pm25Data.map((e) => e.y).reduce((a, b) => a + b) / pm25Data.length : 0;
 
     String formatValue(double value) {
@@ -100,13 +100,13 @@ class _pm25ChartState extends State<pm25Chart> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "PM25 (mg/m3)   ",
+                  "PM25 (ug/m3)   ",
                   style: TextStyle(fontSize: pantalla(context) * 0.018),
                 ),
                 Column(
                   children: [
                     Text(
-                      "Min: ${formatValue(minY + 3)}, Max: ${formatValue(maxY - 3)}",
+                      "Min: ${formatValue(minY)}, Max: ${formatValue(maxY)}",
                       style: TextStyle(fontSize: pantalla(context) * 0.018),
                     ),
                     Text(
@@ -130,8 +130,8 @@ class _pm25ChartState extends State<pm25Chart> {
                             Expanded(
                               child: LineChart(
                                 LineChartData(
-                                  minY: minY,
-                                  maxY: maxY,
+                                  minY: minY*0.5,
+                                  maxY: maxY*1.5,
                                   titlesData: FlTitlesData(
                                     bottomTitles: AxisTitles(
                                       sideTitles: SideTitles(

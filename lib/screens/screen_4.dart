@@ -43,12 +43,10 @@ class _Screen_4State extends State<Screen_4> {
           final data = snapshot.data!.data() as Map<String, dynamic>?;
 
           // Ejemplo: Leer campos específicos
-          final double grados = data?['temperatura'] ?? 'Campo no disponible';
           final double calor = data?['calor'] ?? 'Campo no disponible';
           final int radiacion = data?['radiacion'] ?? 'Campo no disponible';
           final double pm10 = data?['pm10'] ?? 'Campo no disponible';
           final double pm25 = data?['pm25'] ?? 'Campo no disponible';
-          final double humedad = data?['humedad'] ?? 'Campo no disponible';
           final double calidad = max(pm10, pm25); // Calidad del aire
           return Container(
             padding: EdgeInsets.symmetric(
@@ -92,7 +90,7 @@ class _Screen_4State extends State<Screen_4> {
     } else {
       return Center(
         child: Text(
-          "Hola mundo",
+          "Por favor gire su dispositivo",
           style: TextStyle(
               fontSize: max(20, ancho(context) * 0.02),
               color: Colors.greenAccent),

@@ -10,7 +10,14 @@ import '../../globals.dart';
 
 class CalidadAire extends StatefulWidget {
   final double calidad;
-  const CalidadAire({required this.calidad, super.key});
+  final double valorPM10;
+  final double valorPM25;
+  const CalidadAire({
+    required this.calidad,
+    required this.valorPM10,
+    required this.valorPM25,
+    super.key,
+  });
 
   @override
   State<CalidadAire> createState() => _CalidadAireState();
@@ -27,11 +34,51 @@ class _CalidadAireState extends State<CalidadAire> {
     Color color4 = const Color.fromARGB(255, 255, 248, 61);
     Color color5 = const Color.fromARGB(255, 255, 182, 27);
     Color color6 = const Color.fromARGB(255, 235, 61, 62);
-    Color color_mensaje=widget.calidad<10?color1:widget.calidad<20?color2:widget.calidad<40?color3:widget.calidad<60?color4:widget.calidad<80?color5:color6;
-    String mensaje=widget.calidad<10?"Óptimo":widget.calidad<20?"Bueno":widget.calidad<40?"Precaución":widget.calidad<60?"Alerta":widget.calidad<80?"Alarma":"Emergencia";
-    
+    Color color_mensaje=widget.calidad<10 ?color1:widget.calidad<20?color2:widget.calidad<40?color3:widget.calidad<60?color4:widget.calidad<80?color5:color6;
+    //String mensaje=widget.calidad<10?"Óptimo":widget.calidad<20?"Bueno":widget.calidad<40?"Precaución":widget.calidad<60?"Alerta":widget.calidad<80?"Alarma":"Emergencia";
+    String mensaje="vacío";
+    int calidad=0;
+    //si pm25 está entre 0 y 25 y pm10 entre 0 o 50, mensaje = "Óptimo"
+    if(widget.valorPM25>=0 && widget.valorPM25<=25 || widget.valorPM10>=0 && widget.valorPM10<=50){
+      mensaje="Óptimo";
+      color_mensaje=color1;
+      calidad=5;
+    }
+    else if(widget.valorPM25>=26 && widget.valorPM25<=50 || widget.valorPM10>=51 && widget.valorPM10<=100){
+      mensaje="Bueno";
+      color_mensaje=color2;
+      calidad=15;
+    }
+    else if(widget.valorPM25>=51 && widget.valorPM25<=150 || widget.valorPM10>=101 && widget.valorPM10<=250){
+      mensaje="Precaución";
+      color_mensaje=color3;
+      calidad=30;
+    }
+    else if(widget.valorPM25>=151 && widget.valorPM25<=250 || widget.valorPM10>=251 && widget.valorPM10<=400){
+      mensaje="Alerta";
+      color_mensaje=color4;
+      calidad=50;
+    }
+    else if(widget.valorPM25>=251 && widget.valorPM25<=350 || widget.valorPM10>=401 && widget.valorPM10<=500){
+      mensaje="Alarma";
+      color_mensaje=color5;
+      calidad=70;
+    }
+    else if(widget.valorPM25>350|| widget.valorPM10>500){
+      mensaje="Emergencia";
+      color_mensaje=color6;
+      calidad=90;
+    }
+    else{
+      mensaje="N/A";
+      color_mensaje=Colors.cyanAccent;
+      calidad=0;
+    }
 
-    //String mensaje = "Precaución";
+
+
+
+    
 
     // emojis y gauge
     double anchoGauge = alto(context) * 0.070;
@@ -261,6 +308,7 @@ class _CalidadAireState extends State<CalidadAire> {
         
                       child: Text(Demoji.warning, style: TextStyle(fontSize: tamEmoji*0.8,color: Colors.black,fontWeight: FontWeight.bold),)),
                   ),
+                  // indicador dle valor de la calidad 
                   SfRadialGauge(
                     enableLoadingAnimation: true,
                     axes: <RadialAxis>[
@@ -277,7 +325,7 @@ class _CalidadAireState extends State<CalidadAire> {
                         maximum: 110,
                         pointers: <GaugePointer>[
                           NeedlePointer(
-                            value: widget.calidad+10,
+                            value: calidad.toDouble()+10,
                             enableAnimation: true,
                             animationDuration: 1000,
                             animationType: AnimationType.ease,

@@ -74,7 +74,7 @@ class _Screen_1State extends State<Screen_1> {
                   ancho: ancho(context)-alto(context) * 0.01*2,
                   alto: alto(context)*0.16,
                   child: Container(
-                    child: Center(child: CalidadAire(calidad: max(pm25,pm10)*10)),
+                    child: Center(child: CalidadAire(calidad: max(pm25,pm10),valorPM25: pm25,valorPM10: pm10)),
                   )
                 ),
                 Cristal(

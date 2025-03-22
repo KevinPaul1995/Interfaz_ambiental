@@ -9,15 +9,15 @@ class CalidadAire extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String equivalencia = calidad < 10
+    String equivalencia = calidad < 1
         ? "Óptimo"
-        : calidad < 20
+        : calidad < 2
             ? "Bueno"
-            : calidad < 40
+            : calidad < 4
                 ? "Precaución"
-                : calidad < 60
+                : calidad < 6
                     ? "Alerta"
-                    : calidad < 80
+                    : calidad < 8
                         ? "Alarma"
                         : "Emergencia";
 

@@ -181,10 +181,9 @@ class _Screen_2State extends State<Screen_2> {
       );
     }
     else{
-      return GenerarDatosScreen();
       return
       Center(
-        child: Text("Hola mundo"
+        child: Text("Por favor gire su dispositivo"
           ,style: TextStyle(fontSize: max(20,ancho(context)*0.02),
               color: Colors.greenAccent
           ),

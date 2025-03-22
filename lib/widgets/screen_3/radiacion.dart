@@ -10,7 +10,7 @@ class RadiacionChart extends StatefulWidget {
   final int minutos;
   final bool simular;
 
-  RadiacionChart({required this.minutos, this.simular = true});
+  RadiacionChart({required this.minutos, this.simular = false});
 
   @override
   _RadiacionChartState createState() => _RadiacionChartState();
@@ -38,7 +38,7 @@ class _RadiacionChartState extends State<RadiacionChart> {
     try {
       // Consultar Firestore en la colección "historial"
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('historial3') // Tu colección
+          .collection('historial') // Tu colección
           .where('tiempo', isGreaterThanOrEqualTo: startTime)
           .where('tiempo', isLessThan: endTime)
           .orderBy('tiempo') // Necesario para ordenar los datos correctamente
@@ -80,8 +80,8 @@ class _RadiacionChartState extends State<RadiacionChart> {
 
   @override
   Widget build(BuildContext context) {
-    double minY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
-    double maxY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double minY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a < b ? a : b): 0;
+    double maxY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a > b ? a : b): 0;
     double avgY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a + b) / radiacionData.length : 0;
 
     String formatValue(double value) {
@@ -105,7 +105,7 @@ class _RadiacionChartState extends State<RadiacionChart> {
                 Column(
                   children: [
                     Text(
-                      "Min: ${formatValue(minY + 3)}, Max: ${formatValue(maxY - 3)}",
+                      "Min: ${formatValue(minY)}, Max: ${formatValue(maxY)}",
                       style: TextStyle(fontSize: pantalla(context) * 0.018),
                     ),
                     Text(
@@ -129,8 +129,8 @@ class _RadiacionChartState extends State<RadiacionChart> {
                             Expanded(
                               child: LineChart(
                                 LineChartData(
-                                  minY: minY,
-                                  maxY: maxY,
+                                  minY: minY*0.5,
+                                  maxY: maxY*1.5,
                                   titlesData: FlTitlesData(
                                     bottomTitles: AxisTitles(
                                       sideTitles: SideTitles(

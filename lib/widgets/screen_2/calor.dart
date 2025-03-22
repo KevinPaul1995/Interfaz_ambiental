@@ -10,7 +10,7 @@ class CalorChart extends StatefulWidget {
   final int horaInicio;
   final bool simular;
 
-  CalorChart({required this.horaInicio, this.simular = true});
+  CalorChart({required this.horaInicio, this.simular = false});
 
   @override
   _CalorChartState createState() => _CalorChartState();
@@ -48,7 +48,7 @@ class _CalorChartState extends State<CalorChart> {
     try {
       // 4️⃣ Consultar Firestore en la colección "historial"
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('historial3') // 🔥 Tu colección
+          .collection('historial') // 🔥 Tu colección
           .where('tiempo', isGreaterThanOrEqualTo: startTime)
           .where('tiempo', isLessThan: endTime)
           .orderBy('tiempo') // 🔥 Necesario para ordenar los datos correctamente
@@ -61,7 +61,7 @@ class _CalorChartState extends State<CalorChart> {
         double calor = doc['calor'].toDouble();
         String tiempo = doc['tiempo'];
         data.add(FlSpot(index.toDouble(), calor));
-        print("Tiempo: $tiempo, calor: $calor"); // Imprimir en consola
+        //print("Tiempo: $tiempo, calor: $calor"); // Imprimir en consola
         index++;
       }
 
@@ -90,10 +90,10 @@ class _CalorChartState extends State<CalorChart> {
 
   @override
   Widget build(BuildContext context) {
-    double minY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
-    double maxY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double minY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a < b ? a : b): 0;
+    double maxY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a > b ? a : b): 0;
     double avgY = radiacionData.isNotEmpty ? radiacionData.map((e) => e.y).reduce((a, b) => a + b) / radiacionData.length : 0;
-
+    print('depurar: calor: y min $minY, y max $maxY');
     String formatValue(double value) {
       return value % 1 == 0 ? value.toStringAsFixed(0) : value.toStringAsFixed(1);
     }
@@ -115,7 +115,7 @@ class _CalorChartState extends State<CalorChart> {
                 Column(
                   children: [
                     Text(
-                      "Min: ${formatValue(minY + 3)}, Max: ${formatValue(maxY - 3)}",
+                      "Min: ${formatValue(minY)}, Max: ${formatValue(maxY)}",
                       style: TextStyle(fontSize: pantalla(context) * 0.018),
                     ),
                     Text(
@@ -139,8 +139,8 @@ class _CalorChartState extends State<CalorChart> {
                             Expanded(
                               child: LineChart(
                                 LineChartData(
-                                  minY: minY,
-                                  maxY: maxY,
+                                  minY: avgY*0.5,
+                                  maxY: maxY*1.5,
                                   titlesData: FlTitlesData(
                                     bottomTitles: AxisTitles(
                                       sideTitles: SideTitles(

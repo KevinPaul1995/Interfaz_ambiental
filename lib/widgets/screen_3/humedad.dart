@@ -10,7 +10,7 @@ class HumedadChart extends StatefulWidget {
   final int minutos;
   final bool simular;
 
-  HumedadChart({required this.minutos, this.simular = true});
+  HumedadChart({required this.minutos, this.simular = false});
 
   @override
   _HumedadChartState createState() => _HumedadChartState();
@@ -38,7 +38,7 @@ class _HumedadChartState extends State<HumedadChart> {
     try {
       // Consultar Firestore en la colección "historial"
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('historial3') // Tu colección
+          .collection('historial') // Tu colección
           .where('tiempo', isGreaterThanOrEqualTo: startTime)
           .where('tiempo', isLessThan: endTime)
           .orderBy('tiempo') // Necesario para ordenar los datos correctamente
@@ -80,8 +80,8 @@ class _HumedadChartState extends State<HumedadChart> {
 
   @override
   Widget build(BuildContext context) {
-    double minY = humedadData.isNotEmpty ? humedadData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 20 : 0;
-    double maxY = humedadData.isNotEmpty ? humedadData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 20 : 0;
+    double minY = humedadData.isNotEmpty ? humedadData.map((e) => e.y).reduce((a, b) => a < b ? a : b): 0;
+    double maxY = humedadData.isNotEmpty ? humedadData.map((e) => e.y).reduce((a, b) => a > b ? a : b): 0;
     double avgY = humedadData.isNotEmpty ? humedadData.map((e) => e.y).reduce((a, b) => a + b) / humedadData.length : 0;
 
     String formatValue(double value) {
@@ -105,7 +105,7 @@ class _HumedadChartState extends State<HumedadChart> {
                 Column(
                   children: [
                     Text(
-                      "Min: ${formatValue(minY + 20)}, Max: ${formatValue(maxY - 20)}",
+                      "Min: ${formatValue(minY)}, Max: ${formatValue(maxY)}",
                       style: TextStyle(fontSize: pantalla(context) * 0.018),
                     ),
                     Text(
@@ -129,8 +129,8 @@ class _HumedadChartState extends State<HumedadChart> {
                             Expanded(
                               child: LineChart(
                                 LineChartData(
-                                  minY: minY,
-                                  maxY: maxY,
+                                  minY: minY*0.5,
+                                  maxY: maxY*1.5,
                                   titlesData: FlTitlesData(
                                     bottomTitles: AxisTitles(
                                       sideTitles: SideTitles(

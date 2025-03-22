@@ -32,18 +32,29 @@ class _TemperaturaState extends State<Temperatura> {
   final Color color10=const Color.fromARGB(255,157,68,244);
   final Color color11=const Color.fromARGB(255,0,0,0);
   
-  final String imagen1="assets/t1.png";
+ /*  final String imagen1="assets/t1.png";
   final String imagen2="assets/t2.png";
   final String imagen3="assets/t3.jpg";
   final String imagen4="assets/t4.jpg";
-  final String imagen5="assets/t5.png";
+  final String imagen5="assets/t5.png"; */
   
   @override
   Widget build(BuildContext context) {
-  String mensaje_calor=widget.calor<26?"Seguro":widget.calor<32?"Precaución":widget.calor<40?"Precaución extrema":widget.calor<51?"Peligro":widget.calor<92?"Peligro extremo":"Mortal";
-  Color color_temperaturas=widget.grados<0?color1:widget.grados<18?color2:widget.grados<24?color3:widget.grados<35?color4:color5;
-  String imagen=widget.grados<0?imagen1:widget.grados<18?imagen2:widget.grados<24?imagen3:widget.grados<35?imagen4:imagen5;
   Color color_calor=widget.calor<26?color6:widget.calor<32?color7:widget.calor<40?color8:widget.calor<51?color9:widget.calor<92?color10:color11;
+  String mensaje_calor=widget.calor<26?"Seguro":widget.calor<32?"Precaución":widget.calor<40?"Precaución extrema":widget.calor<51?"Peligro":widget.calor<92?"Peligro extremo":"Mortal";
+  // si grados convertidos a farenheit no está en el rango entre 80 -110
+  // se muestra un mensaje de error
+  if((farenheit(widget.grados)<80 || farenheit(widget.grados)>110)&&(widget.grados<40 || widget.grados>100)){
+    print('depurar: temperatura fuera de rango');
+    mensaje_calor="- - -";
+    color_calor=const Color.fromARGB(255, 212, 211, 211);
+  }
+  
+  
+
+
+  Color color_temperaturas=widget.grados<0?color1:widget.grados<18?color2:widget.grados<24?color3:widget.grados<35?color4:color5;
+  //String imagen=widget.grados<0?imagen1:widget.grados<18?imagen2:widget.grados<24?imagen3:widget.grados<35?imagen4:imagen5;
     return Padding(
       padding: EdgeInsets.all(alto(context)*0.01),
       child: Container(
@@ -93,13 +104,13 @@ class _TemperaturaState extends State<Temperatura> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         //agregar una imagen de termometro
-                        Padding(
+                        /* Padding(
                           padding: EdgeInsets.all(alto(context)*0.0),
                           child: Image.asset(
                             imagen, // Ruta de la imagen
                             height: alto(context) * 0.065, // Ajustar el tamaño de la imagen
                           ),
-                        ),
+                        ), */
                         Container(
                           decoration: BoxDecoration(
                             color: color_temperaturas,
@@ -178,7 +189,7 @@ class _TermometroState extends State<Termometro> {
   @override
   Widget build(BuildContext context) {
     double tam_escala = 0.16;
-    double tam_rojo = mapValue(widget.grados, -10, 50, 0, tam_escala);
+    double tam_rojo = mapValue(widget.grados-2, -10, 50, 0, tam_escala);
     double tam_blanco=tam_escala-tam_rojo;
     return Row( // contiene 3 columnas
       //mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -10,7 +10,7 @@ class TemperatureChart extends StatefulWidget {
   final int minutos;
   final bool simular;
 
-  TemperatureChart({required this.minutos, this.simular = true});
+  TemperatureChart({required this.minutos, this.simular = false});
 
   @override
   _TemperatureChartState createState() => _TemperatureChartState();
@@ -38,7 +38,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
     try {
       // Consultar Firestore en la colección "historial"
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('historial3') // Tu colección
+          .collection('historial') // Tu colección
           .where('tiempo', isGreaterThanOrEqualTo: startTime)
           .where('tiempo', isLessThan: endTime)
           .orderBy('tiempo') // Necesario para ordenar los datos correctamente
@@ -80,8 +80,8 @@ class _TemperatureChartState extends State<TemperatureChart> {
 
   @override
   Widget build(BuildContext context) {
-    double minY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
-    double maxY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double minY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a < b ? a : b): 0;
+    double maxY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a > b ? a : b): 0;
     double avgY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a + b) / temperatureData.length : 0;
 
     String formatValue(double value) {
@@ -105,7 +105,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
                 Column(
                   children: [
                     Text(
-                      "Min: ${formatValue(minY + 3)}°C, Max: ${formatValue(maxY - 3)}°C",
+                      "Min: ${formatValue(minY)}, Max: ${formatValue(maxY)}",
                       style: TextStyle(fontSize: pantalla(context) * 0.018),
                     ),
                     Text(
@@ -129,8 +129,8 @@ class _TemperatureChartState extends State<TemperatureChart> {
                             Expanded(
                               child: LineChart(
                                 LineChartData(
-                                  minY: minY,
-                                  maxY: maxY,
+                                  minY: minY*0.5,
+                                  maxY: maxY*1.5,
                                   titlesData: FlTitlesData(
                                     bottomTitles: AxisTitles(
                                       sideTitles: SideTitles(

@@ -10,7 +10,7 @@ class pm10Chart extends StatefulWidget {
   final int horaInicio;
   final bool simular;
 
-  pm10Chart({required this.horaInicio, this.simular = true});
+  pm10Chart({required this.horaInicio, this.simular = false});
 
   @override
   _pm10ChartState createState() => _pm10ChartState();
@@ -62,7 +62,7 @@ class _pm10ChartState extends State<pm10Chart> {
         double pm25 = doc['pm25'].toDouble();
         String tiempo = doc['tiempo'];
         data.add(FlSpot(index.toDouble(), max(pm10, 0)));
-        print("Tiempo: $tiempo, calidad: ${max(pm10, pm25)}"); // Imprimir en consola
+        //print("Tiempo: $tiempo, calidad: ${max(pm10, pm25)}"); // Imprimir en consola
         index++;
       }
 
@@ -91,10 +91,10 @@ class _pm10ChartState extends State<pm10Chart> {
 
   @override
   Widget build(BuildContext context) {
-    double minY = calidadData.isNotEmpty ? calidadData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 3 : 0;
-    double maxY = calidadData.isNotEmpty ? calidadData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 3 : 0;
+    double minY = calidadData.isNotEmpty ? calidadData.map((e) => e.y).reduce((a, b) => a < b ? a : b): 0;
+    double maxY = calidadData.isNotEmpty ? calidadData.map((e) => e.y).reduce((a, b) => a > b ? a : b): 0;
     double avgY = calidadData.isNotEmpty ? calidadData.map((e) => e.y).reduce((a, b) => a + b) / calidadData.length : 0;
-
+    print('depurar: pm10: y min $minY, y max $maxY');
     String formatValue(double value) {
       return value % 1 == 0 ? value.toStringAsFixed(0) : value.toStringAsFixed(1);
     }
@@ -110,13 +110,13 @@ class _pm10ChartState extends State<pm10Chart> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "PM10 (mg/m3)   ",
+                  "PM10 (ug/m3)   ",
                   style: TextStyle(fontSize: pantalla(context) * 0.018),
                 ),
                 Column(
                   children: [
                     Text(
-                      "Min: ${formatValue(minY + 3)}, Max: ${formatValue(maxY - 3)}",
+                      "Min: ${formatValue(minY)}, Max: ${formatValue(maxY)}",
                       style: TextStyle(fontSize: pantalla(context) * 0.018),
                     ),
                     Text(
@@ -140,8 +140,8 @@ class _pm10ChartState extends State<pm10Chart> {
                             Expanded(
                               child: LineChart(
                                 LineChartData(
-                                  minY: minY,
-                                  maxY: maxY,
+                                  minY: minY*0.5,
+                                  maxY: maxY*1.5,
                                   titlesData: FlTitlesData(
                                     bottomTitles: AxisTitles(
                                       sideTitles: SideTitles(

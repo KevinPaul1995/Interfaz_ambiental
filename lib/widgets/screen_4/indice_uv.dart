@@ -10,7 +10,7 @@ class IndiceUV extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget getRadiacionWidget() {
-      if (radiacion >= 1 && radiacion <= 2) {
+      if (radiacion >= 0 && radiacion <= 2) {
         return RadiacionBaja();
       } else if (radiacion >= 3 && radiacion <= 7) {
         return RadiacionModerada();

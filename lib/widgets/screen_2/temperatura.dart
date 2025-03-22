@@ -10,7 +10,7 @@ class TemperatureChart extends StatefulWidget {
   final int horaInicio;
   final bool simular;
 
-  TemperatureChart({required this.horaInicio, this.simular = true});
+  TemperatureChart({required this.horaInicio, this.simular = false});
 
   @override
   _TemperatureChartState createState() => _TemperatureChartState();
@@ -48,7 +48,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
     try {
       // 4️⃣ Consultar Firestore en la colección "historial"
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('historial3') // 🔥 Tu colección
+          .collection('historial') // 🔥 Tu colección
           .where('tiempo', isGreaterThanOrEqualTo: startTime)
           .where('tiempo', isLessThan: endTime)
           .orderBy('tiempo') // 🔥 Necesario para ordenar los datos correctamente
@@ -61,7 +61,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
         double temperatura = doc['temperatura'].toDouble();
         String tiempo = doc['tiempo'];
         data.add(FlSpot(index.toDouble(), temperatura));
-        print("Tiempo: $tiempo, Temperatura: $temperatura"); // Imprimir en consola
+        //print("Tiempo: $tiempo, Temperatura: $temperatura"); // Imprimir en consola
         index++;
       }
 
@@ -92,7 +92,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
   Widget build(BuildContext context) {
     double minY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a < b ? a : b) - 0 : 0;
     double maxY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 0   : 0; 
-    
+    print('depurar: temperatura: y min $minY, y max $maxY'); 
     double avgY = temperatureData.isNotEmpty ? temperatureData.map((e) => e.y).reduce((a, b) => a + b) / temperatureData.length : 0;
 
     String formatValue(double value) {
@@ -107,7 +107,6 @@ class _TemperatureChartState extends State<TemperatureChart> {
           appBar: AppBar(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -117,7 +116,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
                 Column(
                   children: [
                     Text(
-                      "Min: ${formatValue(minY)}°C, Max: ${formatValue(maxY)}°C",
+                      "Min: ${formatValue(minY)}, Max: ${formatValue(maxY)}",
                       style: TextStyle(fontSize: pantalla(context) * 0.018),
                     ),
                     Text(
@@ -135,35 +134,15 @@ class _TemperatureChartState extends State<TemperatureChart> {
                 ? Center(child: Text("No hay datos disponibles"))
                 : Row(
                     children: [
-                      Container(
-                        width: pantalla(context) * 0.04, // 🔹 Ancho del gráfico
-                        height: pantalla(context) * 0.5, // 🔹 Alto del gráfico
-                        //color: Colors.red,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                              RotatedBox(
-                                quarterTurns: 3,
-                                child: Text("${(40)}", style: TextStyle(fontSize: pantalla(context) * 0.015))
-                              ),
-                              
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("${(0).toStringAsFixed(1)}", style: TextStyle(fontSize: pantalla(context) * 0.015))),
-                              ),
-                          ],
-                        ),
-                      ),
+                      
                       Expanded(
                         child: Column(
                           children: [
                             Expanded(
                               child: LineChart(
                                 LineChartData(
-                                  minY: 0,
-                                  maxY: 45,
+                                  minY: minY*0.5,
+                                  maxY: maxY*1.5,
                                   titlesData: FlTitlesData(
                                     bottomTitles: AxisTitles(
                                       sideTitles: SideTitles(
